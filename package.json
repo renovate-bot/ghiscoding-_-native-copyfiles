@@ -1,11 +1,10 @@
 {
   "name": "native-copyfiles",
-  "version": "0.1.1",
+  "version": "0.1.8",
   "description": "a small JS and CLI util to copy files",
   "bin": {
     "copyfiles": "./src/cli.mjs"
   },
-  "type": "module",
   "main": "./src/copyfiles.mjs",
   "types": "./src/index.d.ts",
   "exports": {

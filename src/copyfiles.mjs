@@ -1,7 +1,6 @@
 import { copyFileSync, existsSync, mkdirSync } from 'node:fs';
 import { basename, dirname } from 'node:path';
 import { globSync } from 'tinyglobby';
-import { CopyFileOptions } from './index';
 
 /**
  * Check if a directory exists, if not then create it

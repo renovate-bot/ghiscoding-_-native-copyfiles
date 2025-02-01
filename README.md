@@ -9,7 +9,7 @@
 
 copy files easily via JavaScript or via a CLI, we use [tinyglobby](https://www.npmjs.com/package/tinyglobby) for glob patterns.
 
-> Note: This is a small rewrite of the existing [copyfiles](https://www.npmjs.com/package/copyfiles) project, the options are similar.
+> Note: This is a small rewrite of the existing [copyfiles](https://www.npmjs.com/package/copyfiles) project, it is rewritten with native NodeJS APIs with a single `tinyglobby` dependency, the options are nearly the same.
 > There is 1 major difference though, any options must be provided at the end of the command as suffix (the original project had them as prefix)
 
 ### Install

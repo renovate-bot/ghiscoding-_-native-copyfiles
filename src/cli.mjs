@@ -3,7 +3,6 @@
 import yargs from 'yargs/yargs';
 
 import { copyfiles } from './copyfiles.mjs';
-import pkg from '../package.json';
 
 const cli = yargs(process.argv.slice(2));
 const argv = cli
@@ -58,7 +57,7 @@ const argv = cli
   .help('help')
   .alias('help', 'h')
   .alias('version', 'v')
-  .version(pkg.version)
+  .version('0.1.6')
   .parse();
 
 copyfiles(argv._, argv);
