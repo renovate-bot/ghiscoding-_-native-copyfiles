@@ -1,0 +1,43 @@
+{
+  "name": "native-copyfiles",
+  "version": "0.1.1",
+  "description": "a small JS and CLI util to copy files",
+  "bin": {
+    "copyfiles": "./src/cli.mjs"
+  },
+  "type": "module",
+  "main": "./src/copyfiles.mjs",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./src/copyfiles.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "module": "./src/copyfiles.mjs",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "/src"
+  ],
+  "license": "MIT",
+  "author": "Ghislain B.",
+  "homepage": "https://github.com/ghiscoding/native-copyfiles",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ghiscoding/native-copyfiles.git",
+    "directory": "packages/copyfiles"
+  },
+  "bugs": {
+    "url": "https://github.com/ghiscoding/native-copyfiles/issues"
+  },
+  "scripts": {
+    "version": "copyfiles -v"
+  },
+  "dependencies": {
+    "tinyglobby": "^0.2.10",
+    "yargs": "^17.7.2"
+  }
+}
