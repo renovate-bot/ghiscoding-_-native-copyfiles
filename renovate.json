@@ -3,5 +3,6 @@
   "extends": [
     "config:recommended"
   ],
+  "dependencyDashboard": false,
   "schedule": ["every 2 months"]
 }
