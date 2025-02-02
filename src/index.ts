@@ -1,12 +1,14 @@
 import { copyFileSync, existsSync, mkdirSync } from 'node:fs';
 import { basename, dirname } from 'node:path';
-import { globSync } from 'tinyglobby';
+import { type GlobOptions, globSync } from 'tinyglobby';
+
+import { CopyFileOptions } from './interfaces.js';
 
 /**
  * Check if a directory exists, if not then create it
  * @param {String} dir - directory to create
  */
-export function createDir(dir) {
+export function createDir(dir: string) {
   if (!existsSync(dir)) {
     mkdirSync(dir, { recursive: true });
   }
@@ -19,7 +21,7 @@ export function createDir(dir) {
  * @param {CopyFileOptions} options - CLI options
  * @param {(e?: Error) => void} callback - optionally callback that will be executed after copy is finished or when an error occurs
  */
-export function copyfiles(paths, options, callback) {
+export function copyfiles(paths: string[], options: CopyFileOptions, callback?: (e?: Error) => void) {
   const cb = callback || options.callback;
 
   try {
@@ -37,12 +39,12 @@ export function copyfiles(paths, options, callback) {
 
     // find file source(s) and destination directory
     const sources = paths.slice(0, -1);
-    const outDirectory = paths.pop();
+    const outDirectory = paths.pop() as string;
 
     // create destination directory if not exists
     createDir(outDirectory);
 
-    let globOptions = {};
+    let globOptions: GlobOptions = {};
     if (Array.isArray(options.exclude) && options.exclude.length > 0) {
       globOptions.ignore = options.exclude;
     }
@@ -73,9 +75,9 @@ export function copyfiles(paths, options, callback) {
     }
 
     if (cb) {
-      cb(null);
+      cb();
     }
-  } catch (e) {
+  } catch (e: any) {
     if (cb) {
       cb(e);
     }
@@ -89,7 +91,7 @@ export function copyfiles(paths, options, callback) {
  * @param {Number} fileIdx
  * @param {CopyFileOptions} options
  */
-function copyFile(inFile, outDirectory, fileIdx, options) {
+function copyFile(inFile: string, outDirectory: string, fileIdx: number, options: CopyFileOptions) {
   const fileDir = dirname(inFile);
   const fileName = basename(inFile);
 

@@ -2,7 +2,8 @@
 
 import yargs from 'yargs/yargs';
 
-import { copyfiles } from './copyfiles.mjs';
+import { copyfiles } from './index.js';
+import { type CopyFileOptions } from './interfaces.js';
 
 const cli = yargs(process.argv.slice(2));
 const argv = cli
@@ -42,7 +43,7 @@ const argv = cli
   .option('stat', {
     alias: 's',
     type: 'boolean',
-    description: 'show statistics after execution (time + file count)',
+    description: 'show statistics after execution (execution time + file count)',
   })
   .option('up', {
     alias: 'u',
@@ -60,4 +61,4 @@ const argv = cli
   .version('0.1.6')
   .parse();
 
-copyfiles(argv._, argv);
+copyfiles((argv as any)._ as string[], argv as CopyFileOptions);

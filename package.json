@@ -1,24 +1,26 @@
 {
   "name": "native-copyfiles",
-  "version": "0.1.8",
+  "version": "0.2.1",
   "description": "a small JS and CLI util to copy files",
   "bin": {
-    "copyfiles": "./src/cli.mjs"
+    "copyfiles": "dist/cli.js"
   },
-  "main": "./src/copyfiles.mjs",
-  "types": "./src/index.d.ts",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./src/index.d.ts",
-      "import": "./src/copyfiles.mjs"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     },
     "./package.json": "./package.json"
   },
-  "module": "./src/copyfiles.mjs",
+  "module": "./dist/index.js",
   "publishConfig": {
     "access": "public"
   },
   "files": [
+    "/dist",
     "/src"
   ],
   "license": "MIT",
@@ -33,10 +35,15 @@
     "url": "https://github.com/ghiscoding/native-copyfiles/issues"
   },
   "scripts": {
-    "version": "copyfiles -v"
+    "build": "tsc --outDir dist"
   },
   "dependencies": {
     "tinyglobby": "^0.2.10",
     "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.12.0",
+    "@types/yargs": "^17.0.33",
+    "typescript": "^5.7.3"
   }
 }
