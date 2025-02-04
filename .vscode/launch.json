@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "debugger",
+        "program": "${workspaceFolder}/src/cli.ts",
+        "preLaunchTask": "tsc: build - tsconfig.json",
+        "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+        "args": [
+          "test-copyin", 
+          "test-copyout", 
+          "--up", 
+          "0",
+          "--verbose"
+        ]
+      }
+    ]
+  }
+  

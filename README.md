@@ -7,9 +7,10 @@
 ## Copyfiles
 #### native-copyfiles
 
-copy files easily via JavaScript or via a CLI, we use [tinyglobby](https://www.npmjs.com/package/tinyglobby) for glob patterns and [yargs](https://www.npmjs.com/package/yargs) for the CLI.
+Copy files easily via JavaScript or the CLI, it uses [tinyglobby](https://www.npmjs.com/package/tinyglobby) internally for glob patterns and [yargs](https://www.npmjs.com/package/yargs) for the CLI.
 
-> Note: This is a small rewrite of the original [copyfiles](https://www.npmjs.com/package/copyfiles) package, it is however rewritten to use NodeJS APIs with 2 small dependencies `tinyglobby` and `yargs`. The package options are exactly the same.
+The library is similar to the [copyfiles](https://www.npmjs.com/package/copyfiles) package, it is however written with more native NodeJS APIs and less dependencies. The package options are exactly the same.
+
 > There is 1 major difference though, any options must be provided at the end of the command as a suffix (the original project had them as prefix)
 
 ### Install

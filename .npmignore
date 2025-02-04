@@ -18,15 +18,17 @@
 !.vscode/extensions.json
 .chrome
 
+# misc
+/test-copyin
+/test-copyout
+
 # Tests, Report & Coverage
 *.spec.ts
 /test
-**/docs
-**/website
-**/node_modules
-**/coverage
-**/jest-coverage
-**/*.tgz
-**/junit.xml
-**/test-report.xml
-**/testresult.xml
+/docs
+/coverage
+/jest-coverage
+/*.tgz
+/junit.xml
+/test-report.xml
+/testresult.xml

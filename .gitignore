@@ -27,14 +27,11 @@
 .chrome
 
 # misc
-/.sass-cache
 /connect.lock
 /coverage
-/libpeerconnection.log
 npm-debug.log
 testem.log
-/typings
-yarn-error.log
+/test-copyout
 
 # System Files
 .DS_Store
@@ -45,10 +42,9 @@ Thumbs.db
 /website
 
 # Tests Report & Coverage
-**/node_modules
+**/*.tgz
 **/coverage
 **/jest-coverage
-**/*.tgz
 **/junit.xml
 **/test-report.xml
 **/testresult.xml

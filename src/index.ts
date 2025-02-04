@@ -1,5 +1,6 @@
 import { copyFileSync, existsSync, mkdirSync } from 'node:fs';
-import { basename, dirname } from 'node:path';
+import path, { basename, dirname, join, normalize, posix, sep } from 'node:path';
+import untildify from 'untildify';
 import { type GlobOptions, globSync } from 'tinyglobby';
 
 import { CopyFileOptions } from './interfaces.js';
@@ -39,10 +40,11 @@ export function copyfiles(paths: string[], options: CopyFileOptions, callback?: 
 
     // find file source(s) and destination directory
     const sources = paths.slice(0, -1);
-    const outDirectory = paths.pop() as string;
+    let outDir = paths.pop() as string;
+    outDir = outDir.startsWith('~') ? untildify(outDir) : outDir;
 
     // create destination directory if not exists
-    createDir(outDirectory);
+    createDir(outDir);
 
     let globOptions: GlobOptions = {};
     if (Array.isArray(options.exclude) && options.exclude.length > 0) {
@@ -61,8 +63,8 @@ export function copyfiles(paths: string[], options: CopyFileOptions, callback?: 
       console.log('glob found', allFiles);
     }
 
-    allFiles.forEach((inFile, fileIdx) => {
-      copyFile(inFile, outDirectory, fileIdx, options);
+    allFiles.forEach((inFile) => {
+      copyFile(inFile, outDir, options);
     });
 
     if (options.verbose || options.stat) {
@@ -74,11 +76,11 @@ export function copyfiles(paths: string[], options: CopyFileOptions, callback?: 
       new Error('nothing copied');
     }
 
-    if (cb) {
+    if (typeof cb === 'function') {
       cb();
     }
   } catch (e: any) {
-    if (cb) {
+    if (typeof cb === 'function') {
       cb(e);
     }
   }
@@ -87,48 +89,57 @@ export function copyfiles(paths: string[], options: CopyFileOptions, callback?: 
 /**
  * Copy a single file from a source to a destination directory
  * @param {String} inFile
- * @param {String} outDirectory
- * @param {Number} fileIdx
+ * @param {String} outDir
  * @param {CopyFileOptions} options
  */
-function copyFile(inFile: string, outDirectory: string, fileIdx: number, options: CopyFileOptions) {
+function copyFile(inFile: string, outDir: string, options: CopyFileOptions) {
   const fileDir = dirname(inFile);
   const fileName = basename(inFile);
+  outDir = outDir.startsWith('~') ? untildify(outDir) : outDir;
 
   // a flat output will copy all files to the destination directory directory without any sub-directory
   if (options.flat || options.up === true) {
-    const dest = `${outDirectory}/${fileName}`;
+    const dest = join(outDir, fileName);
+
     if (options.verbose) {
       console.log({ from: inFile, to: dest });
     }
     copyFileSync(inFile, dest);
   }
-  // otherwise copy all the files with the full path (outDirectory path + source path)
+  // otherwise copy all the files with the full path (outDir path + source path)
   else {
-    const upCount = options.up || 1;
-    const dirs = fileDir.split('/');
-
-    let destDir = `${outDirectory}/`;
-    if (upCount) {
-      let srcPathCount = dirs.length;
-      if (srcPathCount < upCount) {
-        throw new Error('cant go up that far');
-      }
-      for (let i = upCount; i < srcPathCount; i++) {
-        destDir += dirs[i] + '/';
-      }
-    } else {
-      destDir = `${outDirectory}/${fileDir}/`;
-    }
+    const upCount = options.up || 0;
+    const destDir = join(outDir, dealWith(fileDir, upCount));
 
     // make sure directory exists
-    createDir(destDir.substring(0, destDir.length - 1));
+    createDir(destDir);
 
     // finally copy the file
-    const dest = `${destDir}${fileName}`;
+    const dest = join(destDir, fileName);
     if (options.verbose) {
-      console.log(`file ${fileIdx + 1}:`, { from: inFile, to: dest });
+      console.log(`copy:`, { from: convertToPosix(inFile), to: convertToPosix(dest) });
     }
     copyFileSync(inFile, dest);
+  }
+
+  function convertToPosix(path: string) {
+    return path.replaceAll(sep, posix.sep);
+  }
+
+  function depth(str: string) {
+    return normalize(str).split(sep).length - 1;
+  }
+
+  function dealWith(inPath: string, up: number | boolean) {
+    if (!up) {
+      return inPath;
+    }
+    if (up === true) {
+      return basename(inPath);
+    }
+    if (depth(inPath) < up) {
+      throw new Error(`can't go up that far`);
+    }
+    return path.join.apply(path, normalize(inPath).split(sep).slice(up));
   }
 }

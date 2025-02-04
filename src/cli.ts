@@ -61,4 +61,11 @@ const argv = cli
   .version('0.1.6')
   .parse();
 
-copyfiles((argv as any)._ as string[], argv as CopyFileOptions);
+copyfiles((argv as any)._ as string[], argv as CopyFileOptions, function (err) {
+  if (err) {
+    console.error(err);
+    process.exit(1);
+  } else {
+    process.exit(0);
+  }
+});
