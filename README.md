@@ -11,7 +11,7 @@ Copy files easily via JavaScript or the CLI, it uses [tinyglobby](https://www.np
 
 The library is similar to the [copyfiles](https://www.npmjs.com/package/copyfiles) package, it is however written with more native NodeJS APIs and less dependencies. The package options are exactly the same (except for `--soft` which is not implemented).
 
-> There is 1 major difference though, any options must be provided at the end of the command as a suffix (the original project had them as prefix)
+> There is 1 major difference though, any options must be provided after the command as a suffix (the original project had them as prefix)
 
 ### Install
 
@@ -36,7 +36,7 @@ npm install native-copyfiles -g
     -h, --help     Show help                                                 [boolean]
 ```
 
-> Note: as opposed to the original [copyfiles](https://www.npmjs.com/package/copyfiles) project, any options **must** be provided at the end as suffix.
+> Note: as opposed to the original [copyfiles](https://www.npmjs.com/package/copyfiles) project, any options **must** be provided as a suffix.
 
 copy some files, give it a bunch of arguments, (which can include globs), the last one
 is the out directory (which it will create if necessary).  Note: on windows globs must be **double quoted**, everybody else can quote however they please.
