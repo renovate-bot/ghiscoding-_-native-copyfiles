@@ -127,7 +127,7 @@ function copyFile(inFile: string, outDir: string, options: CopyFileOptions) {
   }
 
   function depth(str: string) {
-    return normalize(str).split(sep).length - 1;
+    return normalize(str).split(sep).length;
   }
 
   function dealWith(inPath: string, up: number | boolean) {
