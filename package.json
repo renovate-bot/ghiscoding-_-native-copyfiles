@@ -37,8 +37,8 @@
   "scripts": {
     "build": "tsc --outDir dist",
     "preview:copy": "node dist/cli.js test-copyin test-copyout --flat --verbose",
-    "preview:release": "release --dry-run",
-    "release": "release --build-script build --dry-run"
+    "preview:release": "release --dry-run --skip-checks --build-script build",
+    "release": "release --build-script build"
   },
   "dependencies": {
     "tinyglobby": "^0.2.10",
