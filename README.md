@@ -9,7 +9,7 @@
 
 Copy files easily via JavaScript or the CLI, it uses [tinyglobby](https://www.npmjs.com/package/tinyglobby) internally for glob patterns and [yargs](https://www.npmjs.com/package/yargs) for the CLI.
 
-The library is similar to the [copyfiles](https://www.npmjs.com/package/copyfiles) package, it is however written with more native NodeJS APIs and less dependencies. The package options are exactly the same.
+The library is similar to the [copyfiles](https://www.npmjs.com/package/copyfiles) package, it is however written with more native NodeJS APIs and less dependencies. The package options are exactly the same (except for `--soft` which is not implemented).
 
 > There is 1 major difference though, any options must be provided at the end of the command as a suffix (the original project had them as prefix)
 
