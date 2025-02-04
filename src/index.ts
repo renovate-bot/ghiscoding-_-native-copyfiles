@@ -138,7 +138,7 @@ function copyFile(inFile: string, outDir: string, options: CopyFileOptions) {
       return basename(inPath);
     }
     if (depth(inPath) < up) {
-      throw new Error(`can't go up that far`);
+      throw new Error(`Can't go up ${up} levels from ${inPath} (${depth(inPath)} levels).`);
     }
     return path.join.apply(path, normalize(inPath).split(sep).slice(up));
   }
