@@ -120,7 +120,6 @@ and finally the third and last argument is a callback function which is executed
 {
 	verbose: bool,    // enable debug messages
 	up: number,       // -u value
-	soft: bool,	  // soft copy (skip existing dirs & files)
 	exclude: string,  // exclude pattern
 	all: bool,	  // include dot files
 	follow: bool,	  // Follow symlinked directories when expanding ** patterns
