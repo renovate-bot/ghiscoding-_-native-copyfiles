@@ -38,7 +38,9 @@
     "build": "tsc --outDir dist",
     "preview:copy": "node dist/cli.js test-copyin test-copyout --flat --verbose",
     "preview:release": "release --dry-run --skip-checks --build-script build",
-    "release": "release --build-script build"
+    "release": "release --build-script build",
+    "test": "vitest --watch --config ./vitest.config.mts",
+    "test:coverage": "vitest --coverage --config ./vitest.config.mts"
   },
   "dependencies": {
     "tinyglobby": "^0.2.10",
@@ -49,6 +51,8 @@
     "@gc-utils/release": "^0.1.5",
     "@types/node": "^22.12.0",
     "@types/yargs": "^17.0.33",
-    "typescript": "^5.7.3"
+    "@vitest/coverage-v8": "^3.0.5",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.5"
   }
 }

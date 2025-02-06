@@ -9,13 +9,23 @@
         "preLaunchTask": "tsc: build - tsconfig.json",
         "outFiles": ["${workspaceFolder}/dist/**/*.js"],
         "args": [
-          "test-copyin", 
-          "test-copyout", 
-          "--up", 
+          "test-copyin",
+          "test-copyout",
+          "--up",
           "0",
           "--verbose"
         ]
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Vitest - Debug Current Test File",
+        "autoAttachChildProcesses": true,
+        "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+        "program": "${workspaceRoot}/node_modules/vitest/vitest.mjs",
+        "args": ["run", "${relativeFile}", "--no-watch", "--config", "./vitest.config.mts"],
+        "smartStep": true,
+        "console": "integratedTerminal"
       }
     ]
   }
-  
