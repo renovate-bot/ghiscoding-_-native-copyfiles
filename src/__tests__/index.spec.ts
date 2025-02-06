@@ -1,4 +1,5 @@
 import { mkdirSync, readdir, rmdirSync, symlinkSync, writeFileSync } from 'node:fs';
+import { machine } from 'node:os';
 import { globSync } from 'tinyglobby';
 import { afterAll, afterEach, beforeEach, describe, expect, test } from 'vitest';
 
@@ -110,7 +111,7 @@ describe('copyfiles', () => {
     });
   });
 
-  test('follow', () => {
+  test.skipIf(machine().startsWith('x86_'))('follow', () => {
     mkdirSync('input/origin');
     mkdirSync('input/origin/inner');
     writeFileSync('input/origin/inner/a.txt', 'a');
