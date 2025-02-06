@@ -73,7 +73,7 @@ export function copyfiles(paths: string[], options: CopyFileOptions, callback?: 
     }
 
     if (options.error && allFiles.length < 1) {
-      new Error('nothing copied');
+      throw new Error('nothing copied');
     }
 
     if (typeof cb === 'function') {
@@ -102,7 +102,7 @@ function copyFile(inFile: string, outDir: string, options: CopyFileOptions) {
     const dest = join(outDir, fileName);
 
     if (options.verbose) {
-      console.log(`copy:`, { from: convertToPosix(inFile), to: convertToPosix(dest) });
+      console.log('copy:', { from: convertToPosix(inFile), to: convertToPosix(dest) });
     }
     copyFileSync(inFile, dest);
   }
@@ -117,7 +117,7 @@ function copyFile(inFile: string, outDir: string, options: CopyFileOptions) {
     // finally copy the file
     const dest = join(destDir, fileName);
     if (options.verbose) {
-      console.log(`copy:`, { from: convertToPosix(inFile), to: convertToPosix(dest) });
+      console.log('copy:', { from: convertToPosix(inFile), to: convertToPosix(dest) });
     }
     copyFileSync(inFile, dest);
   }
@@ -130,12 +130,9 @@ function copyFile(inFile: string, outDir: string, options: CopyFileOptions) {
     return normalize(str).split(sep).length;
   }
 
-  function dealWith(inPath: string, up: number | boolean) {
+  function dealWith(inPath: string, up: number) {
     if (!up) {
       return inPath;
-    }
-    if (up === true) {
-      return basename(inPath);
     }
     if (depth(inPath) < up) {
       throw new Error(`Can't go up ${up} levels from ${inPath} (${depth(inPath)} levels).`);
