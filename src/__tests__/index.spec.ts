@@ -22,6 +22,18 @@ describe('copyfiles', () => {
     createDir('input/other');
   });
 
+  test('throws when inFile or outDir are missing', () => {
+    copyfiles(['input/**/*.txt'], {}, (err) => {
+      expect(err?.message).toBe('Please make sure to provide both <inFile> and <outDirectory>, i.e.: "copyfiles <inFile> <outDirectory>"');
+    });
+  });
+
+  test('throws when flat & up used together', () => {
+    copyfiles(['input/**/*.txt', 'output'], { flat: true, up: 2 }, (err) => {
+      expect(err?.message).toBe('Cannot use --flat in conjunction with --up option.');
+    });
+  });
+
   test('normal', () => {
     writeFileSync('input/a.txt', 'a');
     writeFileSync('input/b.txt', 'b');
@@ -96,6 +108,17 @@ describe('copyfiles', () => {
       readdir('output', (err, files) => {
         expect(files).toEqual(['a.txt', 'b.txt']);
       });
+    });
+  });
+
+  test('throws with up 3', () => {
+    writeFileSync('input/other/a.txt', 'a');
+    writeFileSync('input/other/b.txt', 'b');
+    writeFileSync('input/other/c.js', 'c');
+    copyfiles(['input/**/*.txt', 'output'], { up: 3 }, (err) => {
+      if (err) {
+        expect(err?.message).toBe(`Can't go up 3 levels from input/other (2 levels).`);
+      }
     });
   });
 
