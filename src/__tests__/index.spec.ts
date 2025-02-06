@@ -110,6 +110,19 @@ describe('copyfiles', () => {
     });
   });
 
+  test('follow', () => {
+    if (process.platform !== 'win32') {
+      mkdirSync('input/origin');
+      mkdirSync('input/origin/inner');
+      writeFileSync('input/origin/inner/a.txt', 'a');
+      symlinkSync('origin', 'input/dest');
+      copyfiles(['input/**/*.txt', 'output'], { up: 1, follow: true }, (err) => {
+        const files = globSync('output/**/*.txt');
+        expect(files).toEqual(['output/dest/inner/a.txt', 'output/origin/inner/a.txt']);
+      });
+    }
+  });
+
   test('verbose', () => {
     const logSpy = vi.spyOn(global.console, 'log').mockReturnValue();
     writeFileSync('input/other/a.txt', 'a');
@@ -124,18 +137,5 @@ describe('copyfiles', () => {
         expect(logSpy).toHaveBeenCalledWith('Files copied:   2');
       });
     });
-  });
-
-  test('follow', () => {
-    if (process.platform !== 'win32') {
-      mkdirSync('input/origin');
-      mkdirSync('input/origin/inner');
-      writeFileSync('input/origin/inner/a.txt', 'a');
-      symlinkSync('origin', 'input/dest');
-      copyfiles(['input/**/*.txt', 'output'], { up: 1, follow: true }, (err) => {
-        const files = globSync('output/**/*.txt');
-        expect(files).toEqual(['output/dest/inner/a.txt', 'output/origin/inner/a.txt']);
-      });
-    }
   });
 });
