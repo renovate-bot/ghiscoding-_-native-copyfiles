@@ -99,7 +99,21 @@ describe('copyfiles', () => {
     });
   });
 
+  test('flatten', () => {
+    writeFileSync('input/other/a.txt', 'a');
+    writeFileSync('input/b.txt', 'b');
+    writeFileSync('input/other/c.js', 'c');
+    copyfiles(['input/**/*.txt', 'output'], { flat: true }, (err) => {
+      readdir('output', (err, files) => {
+        expect(files).toEqual(['a.txt', 'b.txt']);
+      });
+    });
+  });
+
   test('verbose', () => {
+    cleanupFolders();
+    createDir('input/other');
+
     const logSpy = vi.spyOn(global.console, 'log').mockReturnValue();
     writeFileSync('input/other/a.txt', 'a');
     writeFileSync('input/b.txt', 'b');
@@ -111,17 +125,6 @@ describe('copyfiles', () => {
         expect(logSpy).toHaveBeenCalledWith('copy:', { from: 'input/other/a.txt', to: 'output/a.txt' });
         expect(logSpy).toHaveBeenCalledWith('copy:', { from: 'input/b.txt', to: 'output/b.txt' });
         expect(logSpy).toHaveBeenCalledWith('Files copied:   2');
-      });
-    });
-  });
-
-  test('flatten', () => {
-    writeFileSync('input/other/a.txt', 'a');
-    writeFileSync('input/b.txt', 'b');
-    writeFileSync('input/other/c.js', 'c');
-    copyfiles(['input/**/*.txt', 'output'], { flat: true }, (err) => {
-      readdir('output', (err, files) => {
-        expect(files).toEqual(['a.txt', 'b.txt']);
       });
     });
   });
