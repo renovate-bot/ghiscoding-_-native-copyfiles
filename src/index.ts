@@ -102,7 +102,7 @@ function copyFile(inFile: string, outDir: string, options: CopyFileOptions) {
     const dest = join(outDir, fileName);
 
     if (options.verbose) {
-      console.log({ from: inFile, to: dest });
+      console.log(`copy:`, { from: convertToPosix(inFile), to: convertToPosix(dest) });
     }
     copyFileSync(inFile, dest);
   }

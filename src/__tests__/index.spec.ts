@@ -1,7 +1,6 @@
 import { mkdirSync, readdir, rmdirSync, symlinkSync, writeFileSync } from 'node:fs';
-import { machine } from 'node:os';
 import { globSync } from 'tinyglobby';
-import { afterAll, afterEach, beforeEach, describe, expect, test } from 'vitest';
+import { afterAll, afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { copyfiles, createDir } from '../';
 
@@ -111,14 +110,32 @@ describe('copyfiles', () => {
     });
   });
 
-  test.skipIf(machine().startsWith('x86_'))('follow', () => {
-    mkdirSync('input/origin');
-    mkdirSync('input/origin/inner');
-    writeFileSync('input/origin/inner/a.txt', 'a');
-    symlinkSync('origin', 'input/dest');
-    copyfiles(['input/**/*.txt', 'output'], { up: 1, follow: true }, (err) => {
-      const files = globSync('output/**/*.txt');
-      expect(files).toEqual(['output/dest/inner/a.txt', 'output/origin/inner/a.txt']);
+  test('follow', () => {
+    if (process.platform !== 'win32') {
+      mkdirSync('input/origin');
+      mkdirSync('input/origin/inner');
+      writeFileSync('input/origin/inner/a.txt', 'a');
+      symlinkSync('origin', 'input/dest');
+      copyfiles(['input/**/*.txt', 'output'], { up: 1, follow: true }, (err) => {
+        const files = globSync('output/**/*.txt');
+        expect(files).toEqual(['output/dest/inner/a.txt', 'output/origin/inner/a.txt']);
+      });
+    }
+  });
+
+  test('verbose', () => {
+    const logSpy = vi.spyOn(global.console, 'log').mockReturnValue();
+    writeFileSync('input/other/a.txt', 'a');
+    writeFileSync('input/b.txt', 'b');
+    writeFileSync('input/other/c.js', 'c');
+    copyfiles(['input/**/*.txt', 'output'], { flat: true, verbose: true }, (err) => {
+      readdir('output', (err, files) => {
+        expect(files).toEqual(['a.txt', 'b.txt']);
+        expect(logSpy).toHaveBeenCalledWith('glob found', ['input/b.txt', 'input/other/a.txt']);
+        expect(logSpy).toHaveBeenCalledWith('copy:', { from: 'input/other/a.txt', to: 'output/a.txt' });
+        expect(logSpy).toHaveBeenCalledWith('copy:', { from: 'input/b.txt', to: 'output/b.txt' });
+        expect(logSpy).toHaveBeenCalledWith('Files copied:   2');
+      });
     });
   });
 });
