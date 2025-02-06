@@ -2,7 +2,7 @@ import { mkdirSync, readdir, rmdirSync, symlinkSync, writeFileSync } from 'node:
 import { globSync } from 'tinyglobby';
 import { afterAll, afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { copyfiles, createDir } from '../';
+import { copyfiles, createDir } from '../index';
 
 async function cleanupFolders() {
   try {
@@ -146,6 +146,7 @@ describe('copyfiles', () => {
     }
   });
 
+  // not exactly sure why but this test fails unless it's the last one
   test('verbose', () => {
     const logSpy = vi.spyOn(global.console, 'log').mockReturnValue();
     writeFileSync('input/other/a.txt', 'a');
