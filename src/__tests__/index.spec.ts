@@ -111,7 +111,7 @@ describe('copyfiles', () => {
   });
 
   test('verbose', () => {
-    const logSpy = vi.spyOn(console, 'log');
+    const logSpy = vi.spyOn(global.console, 'log');
     writeFileSync('input/other/a.txt', 'a');
     writeFileSync('input/b.txt', 'b');
     writeFileSync('input/other/c.js', 'c');
