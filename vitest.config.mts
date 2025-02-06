@@ -5,12 +5,6 @@ export default defineConfig({
     cache: false,
     clearMocks: true,
     environment: 'node',
-    pool: 'threads',
-    poolOptions: {
-      threads: {
-        singleThread: true
-      },
-    },
     watch: false,
     coverage: {
       include: ['src/**/*.ts'],
