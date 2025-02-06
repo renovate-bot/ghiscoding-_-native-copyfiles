@@ -1,22 +1,6 @@
-import { rmdirSync } from 'node:fs';
-import { afterAll, afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
-
-async function cleanupFolders() {
-  try {
-    rmdirSync('input', { recursive: true });
-    rmdirSync('output', { recursive: true });
-  } catch (e) { }
-}
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 describe('copyfiles', () => {
-  afterEach(async () => {
-    vi.clearAllMocks();
-    cleanupFolders();
-    process.exitCode = undefined;
-  });
-
-  afterAll(() => cleanupFolders());
-
   beforeEach(() => {
     vi.spyOn(process, 'exit').mockImplementation((() => { }) as any);
   });
