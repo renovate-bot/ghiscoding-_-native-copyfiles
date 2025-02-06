@@ -4,7 +4,7 @@
       {
         "type": "node",
         "request": "launch",
-        "name": "debugger",
+        "name": "Code Debugger",
         "program": "${workspaceFolder}/src/cli.ts",
         "preLaunchTask": "tsc: build - tsconfig.json",
         "outFiles": ["${workspaceFolder}/dist/**/*.js"],
