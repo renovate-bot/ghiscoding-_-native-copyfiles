@@ -12,8 +12,6 @@ async function cleanupFolders() {
 }
 
 describe('copyfiles', () => {
-  const isWindows = process.platform === 'win32';
-
   afterEach(async () => {
     cleanupFolders();
   });
@@ -128,7 +126,7 @@ describe('copyfiles', () => {
     });
   });
 
-  test.skipIf(isWindows)('follow', () => {
+  test.skipIf(process.platform === 'win32')('follow', () => {
     mkdirSync('input/origin');
     mkdirSync('input/origin/inner');
     writeFileSync('input/origin/inner/a.txt', 'a');
