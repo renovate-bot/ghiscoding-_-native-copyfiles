@@ -1,5 +1,4 @@
 import { mkdirSync, readdir, rmdirSync, symlinkSync, writeFileSync } from 'node:fs';
-import { arch } from 'node:os';
 import { globSync } from 'tinyglobby';
 import { afterAll, afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
@@ -13,6 +12,8 @@ async function cleanupFolders() {
 }
 
 describe('copyfiles', () => {
+  const isWindows = process.platform === 'win32';
+
   afterEach(async () => {
     cleanupFolders();
   });
@@ -127,7 +128,7 @@ describe('copyfiles', () => {
     });
   });
 
-  test.skipIf(arch() === 'x64')('follow', () => {
+  test.skipIf(isWindows)('follow', () => {
     mkdirSync('input/origin');
     mkdirSync('input/origin/inner');
     writeFileSync('input/origin/inner/a.txt', 'a');
