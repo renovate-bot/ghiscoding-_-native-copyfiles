@@ -11,14 +11,14 @@
 
 Copy files easily via JavaScript or the CLI, it uses [tinyglobby](https://www.npmjs.com/package/tinyglobby) internally for glob patterns and [yargs](https://www.npmjs.com/package/yargs) for the CLI.
 
-The library is nearly the same as the [copyfiles](https://www.npmjs.com/package/copyfiles) package, it is however written with more native NodeJS APIs and less dependencies. The package options are exactly the same (except for `--soft` which is not implemented).
+The library is nearly the same as the [copyfiles](https://www.npmjs.com/package/copyfiles) package, it is however written with more native NodeJS code and less dependencies (3 instead of 7). The package options are exactly the same (except for `--soft` which is not implemented).
 
 > There is 1 major difference though, any options must be provided after the command as a suffix (the original project had them as prefix)
 
 ### Install
 
 ```bash
-npm install native-copyfiles -g
+npm install native-copyfiles -D
 ```
 
 ### Command Line
@@ -39,10 +39,10 @@ npm install native-copyfiles -g
 ```
 
 > [!NOTE]
-> Options **must** be provided after the command directories as a suffix (the original project had them as prefix)
+> Options **must** be provided after the command directories as suffix (the original project had them as prefix)
 
 copy some files, give it a bunch of arguments, (which can include globs), the last one
-is the out directory (which it will create if necessary).  Note: on windows globs must be **double quoted**, everybody else can quote however they please.
+is the out directory (which it will create if necessary).  Note: on Windows globs must be **double quoted**, everybody else can quote however they please.
 
 ```bash
 copyfiles foo foobar foo/bar/*.js out
@@ -79,7 +79,7 @@ if your terminal doesn't support globstars then you can quote them
 copyfiles ./foo/**/*.txt out -f
 ```
 
-does not work by default on a mac
+does not work by default on a Mac
 
 but
 
