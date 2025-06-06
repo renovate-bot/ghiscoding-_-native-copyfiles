@@ -11,9 +11,10 @@
 
 Copy files easily via JavaScript or the CLI, it uses [tinyglobby](https://www.npmjs.com/package/tinyglobby) internally for glob patterns and [yargs](https://www.npmjs.com/package/yargs) for the CLI.
 
-The library is nearly the same as the [copyfiles](https://www.npmjs.com/package/copyfiles) package, it is however written with more native NodeJS code and less dependencies (3 instead of 7). The package options are exactly the same (except for `--soft` which is not implemented).
+The library is very similar to the [copyfiles](https://www.npmjs.com/package/copyfiles) package, it is however written with more native NodeJS code and less dependencies (3 instead of 7). The package options are the same (except for `--soft` which is not implemented), some new options were also added in this project here (see below).
 
-> There is 1 major difference though, any options must be provided after the command as a suffix (the original project had them as prefix)
+> Note: there is 1 major difference with `copyfiles`, any options must be provided as a suffix after the source/target directories command (the original project had them as prefix)<br>
+> This mean calling: `copyfiles source target [options]` instead of `copyfiles [options] source target`
 
 ### Install
 
@@ -197,8 +198,8 @@ and finally the third and last argument is a callback function which is executed
 
 ```js
 {
-    verbose: bool,      // enable debug messages
-    up: number,         // -u value
+    verbose: bool,      // print more information to console
+    up: number,         // slice a path off the bottom of the paths
     exclude: string,    // exclude pattern
     all: bool,	        // include dot files
     follow: bool,       // follow symlinked directories when expanding ** patterns
