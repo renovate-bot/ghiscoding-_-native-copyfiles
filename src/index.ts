@@ -1,5 +1,5 @@
 import { createReadStream, createWriteStream, existsSync, mkdirSync, statSync } from 'node:fs';
-import path, { basename, dirname, extname, join, normalize, posix, sep } from 'node:path';
+import { basename, dirname, extname, join, normalize, posix, sep } from 'node:path';
 import untildify from 'untildify';
 import { type GlobOptions, globSync } from 'tinyglobby';
 
@@ -276,5 +276,5 @@ function dealWith(inPath: string, up: number) {
   if (depth(inPath) < up) {
     throw new Error(`Can't go up ${up} levels from ${inPath} (${depth(inPath)} levels).`);
   }
-  return join.apply(path, normalize(inPath).split(sep).slice(up));
+  return join(...normalize(inPath).split(sep).slice(up));
 }
