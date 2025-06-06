@@ -127,7 +127,7 @@ If the destination path is a directory, the file will be copied into that direct
 
 ### Rename Multiple Files During Copy
 
-#### 1. Rename Using Glob Patterns
+#### 1. Rename Using Wildcard (`*`)
 
 You can use a wildcard (`*`) in the destination to rename files dynamically. For example, to copy all `.css` files and change their extension to `.scss`:
 
@@ -146,7 +146,7 @@ You can combine this with `--flat` or `--up` to control the output structure.
 #### 2. Rename Using a Callback (JavaScript API)
 
 For advanced renaming, you can use the `rename` callback option in the API.  
-This function receives the source and destination path and should return the new destination path.
+This function receives the source and destination path and should return the new destination path of each file being processed.
 
 **Example: Change extension to `.scss` using a callback**
 
@@ -176,10 +176,10 @@ copyfiles(['input/**/*.css', 'output'], {
 The `rename` callback gives you full control over the output filename and path.
 
 > **Tip:**  
-> You can use either the glob pattern approach or the `rename` callback, or even combine them for advanced scenarios!
+> You can use either the wildcard approach or the `rename` callback, or even combine them for advanced scenarios!
 
 > [!NOTE]
-> If you use both a destination glob pattern (e.g. `output/*.ext`) and a `rename` callback, the glob pattern is applied first and then the `rename` callback is executed last on the computed destination path. This allows you to combine both features for advanced renaming scenarios.
+> If you use both a destination wildcard approach (e.g. `output/*.ext`) and a `rename` callback, the wildcard change is applied first and then the `rename` callback is executed last on the computed destination path. This allows you to combine both features for advanced renaming scenarios.
 
 ---
 
