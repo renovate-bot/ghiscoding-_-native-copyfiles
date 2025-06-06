@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file. See [Conven
 
 ### Features
 
-* rename multiple files while copying using glob patterns ([#19](https://github.com/ghiscoding/native-copyfiles/issues/19)) ([c7ed58d](https://github.com/ghiscoding/native-copyfiles/commit/c7ed58dc0e5dece116a571dbc8cd3796c5aa9ea8))
+* rename multiple files while copying using wildcard `*` ([#19](https://github.com/ghiscoding/native-copyfiles/issues/19)) ([c7ed58d](https://github.com/ghiscoding/native-copyfiles/commit/c7ed58dc0e5dece116a571dbc8cd3796c5aa9ea8))
 * rename single file on copy ([#18](https://github.com/ghiscoding/native-copyfiles/issues/18)) ([02253ee](https://github.com/ghiscoding/native-copyfiles/commit/02253ee23bf0bf3469e3dee0f7e4ece9e7ae283b))
 
 ## [1.0.0](https://github.com/ghiscoding/native-copyfiles/compare/0.3.2...v1.0.0) (2025-06-03)
