@@ -34,6 +34,7 @@ npm install native-copyfiles -D
     -E, --error    throw error if nothing is copied                          [boolean]
     -V, --verbose  print more information to console                         [boolean]
     -F, --follow   follow symbolic links                                     [boolean]
+    -s, --stat     show statistics after execution (time + file count)       [boolean]
     -v, --version  show version number                                       [boolean]
     -h, --help     show help                                                 [boolean]
 ```
@@ -202,6 +203,7 @@ and finally the third and last argument is a callback function which is executed
     all: bool,	        // include dot files
     follow: bool,       // follow symlinked directories when expanding ** patterns
     error: bool         // raise errors if no files copied
+    stat: bool          // show statistics after execution (time + file count)
     rename: (src, dest) => string;  // callback to transform the destination filename(s)
 }
 ```
