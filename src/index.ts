@@ -1,5 +1,5 @@
-import { createReadStream, createWriteStream, existsSync, mkdirSync } from 'node:fs';
-import path, { basename, dirname, join, normalize, posix, sep } from 'node:path';
+import { createReadStream, createWriteStream, existsSync, mkdirSync, statSync } from 'node:fs';
+import path, { basename, dirname, extname, join, normalize, posix, sep } from 'node:path';
 import untildify from 'untildify';
 import { type GlobOptions, globSync } from 'tinyglobby';
 
@@ -24,6 +24,69 @@ function throwOrCallback(err: Error, cb?: (e?: Error) => void) {
   } else {
     throw err;
   }
+}
+
+function callRenameWhenDefined(inFile: string, dest: string, options: CopyFileOptions): string {
+  if (typeof options.rename === 'function') {
+    return options.rename(inFile, dest);
+  }
+  return dest;
+}
+
+/**
+ * Calculate the destination path for a given input file and options.
+ */
+function getDestinationPath(
+  inFile: string,
+  outDir: string,
+  options: CopyFileOptions,
+  isSingleFileRename = false
+): string {
+  const fileDir = dirname(inFile);
+  const fileName = basename(inFile);
+  const srcExt = extname(fileName);
+  const srcBase = fileName && srcExt ? fileName.slice(0, -srcExt.length) : fileName;
+  const upCount = options.up || 0;
+
+  // 1. Single file rename (no glob, dest is not a directory, no *)
+  if (isSingleFileRename && !outDir.includes('*')) {
+    let dest = outDir;
+    return callRenameWhenDefined(inFile, dest, options);
+  }
+
+  // 2. Wildcard pattern in destination
+  if (outDir.includes('*')) {
+    // Replace * with base name (without extension)
+    const destFileName = outDir.replace('*', srcBase);
+    // If the pattern after replacement has no extension, add the extension from the pattern or the source
+    let finalDestFileName = destFileName;
+    if (!extname(destFileName)) {
+      finalDestFileName += extname(outDir) || srcExt;
+    }
+
+    const baseOutDir = outDir.replace(/[*][^\\\/]*$/, '');
+    let dest: string;
+    if (options.flat || upCount === true) {
+      dest = join(baseOutDir, basename(finalDestFileName));
+    } else if (upCount) {
+      const upPath = dealWith(fileDir, upCount);
+      dest = join(baseOutDir, upPath, basename(finalDestFileName));
+    } else {
+      dest = join(baseOutDir, fileDir, basename(finalDestFileName));
+    }
+    return callRenameWhenDefined(inFile, dest, options);
+  }
+
+  // 3. Flat or up logic (no wildcard)
+  let baseDir: string;
+  if (options.flat || upCount === true) {
+    baseDir = outDir;
+  } else {
+    baseDir = join(outDir, dealWith(fileDir, upCount));
+  }
+  let dest = join(baseDir, fileName);
+
+  return callRenameWhenDefined(inFile, dest, options);
 }
 
 /**
@@ -61,13 +124,18 @@ export function copyfiles(paths: string[], options: CopyFileOptions, callback?: 
   let outPath = paths.pop() as string;
   outPath = outPath.startsWith('~') ? untildify(outPath) : outPath;
 
-  // Special case: single file to file (rename)
+  // Detect single file rename (no glob, dest is not a directory, no *)
   const isSingleFile = sources.length === 1 && !sources[0].includes('*');
   let isDestFile = false;
   if (isSingleFile) {
     try {
-      const stat = existsSync(outPath) ? require('node:fs').statSync(outPath) : null;
-      isDestFile = !stat || !stat.isDirectory();
+      // If the output path doesn't exist, treat as file if it has an extension or ends with a dotfile
+      if (!existsSync(outPath)) {
+        isDestFile = !!extname(outPath) || basename(outPath).startsWith('.');
+      } else {
+        const stat = statSync(outPath);
+        isDestFile = !stat.isDirectory();
+      }
       /* v8 ignore next 3 */
     } catch {
       isDestFile = true;
@@ -76,7 +144,7 @@ export function copyfiles(paths: string[], options: CopyFileOptions, callback?: 
 
   if (!isDestFile) {
     // create destination directory if not exists
-    createDir(outPath);
+    createDir(dirname(outPath));
   }
 
   let globOptions: GlobOptions = {};
@@ -136,7 +204,7 @@ export function copyfiles(paths: string[], options: CopyFileOptions, callback?: 
           if (typeof cb === 'function') cb();
         }
       },
-      isSingleFile && isDestFile // pass as "rename" mode
+      isSingleFile && isDestFile // pass as single rename mode
     );
   });
 }
@@ -153,30 +221,18 @@ function copyFileStream(
   outDir: string,
   options: CopyFileOptions,
   cb: (e?: Error) => void,
-  renameMode = false
+  isSingleFileRename = false
 ) {
-  const fileDir = dirname(inFile);
-  const fileName = basename(inFile);
   outDir = outDir.startsWith('~') ? untildify(outDir) : outDir;
-
   let dest: string;
-  if (renameMode) {
-    dest = outDir;
-    createDir(path.dirname(dest));
-  } else if (options.flat || options.up === true) {
-    dest = join(outDir, fileName);
-  } else {
-    const upCount = options.up || 0;
-    let destDir: string;
-    try {
-      destDir = join(outDir, dealWith(fileDir, upCount));
-    } catch (err) {
-      cb(err as Error);
-      return;
-    }
-    createDir(destDir);
-    dest = join(destDir, fileName);
+  try {
+    dest = getDestinationPath(inFile, outDir, options, isSingleFileRename);
+  } catch (err) {
+    cb(err as Error);
+    return;
   }
+
+  createDir(dirname(dest));
 
   if (options.verbose) {
     console.log('copy:', { from: convertToPosix(inFile), to: convertToPosix(dest) });
@@ -207,18 +263,18 @@ function copyFileStream(
   function convertToPosix(pathStr: string) {
     return pathStr.replaceAll(sep, posix.sep);
   }
+}
 
-  function depth(str: string) {
-    return normalize(str).split(sep).length;
-  }
+function depth(str: string) {
+  return normalize(str).split(sep).length;
+}
 
-  function dealWith(inPath: string, up: number) {
-    if (!up) {
-      return inPath;
-    }
-    if (depth(inPath) < up) {
-      throw new Error(`Can't go up ${up} levels from ${inPath} (${depth(inPath)} levels).`);
-    }
-    return path.join.apply(path, normalize(inPath).split(sep).slice(up));
+function dealWith(inPath: string, up: number) {
+  if (!up) {
+    return inPath;
   }
+  if (depth(inPath) < up) {
+    throw new Error(`Can't go up ${up} levels from ${inPath} (${depth(inPath)} levels).`);
+  }
+  return join.apply(path, normalize(inPath).split(sep).slice(up));
 }

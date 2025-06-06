@@ -1,4 +1,5 @@
-import { mkdirSync, readdir, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readdir, readdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { Readable } from 'node:stream';
 import { globSync } from 'tinyglobby';
 import { afterAll, afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
@@ -13,7 +14,6 @@ vi.mock('node:fs', async () => {
     ...actual,
     createReadStream: (...args: any[]) => {
       if (shouldMockReadError) {
-        const { Readable } = require('node:stream');
         const stream = new Readable({ read() { } });
         setImmediate(() => stream.emit('error', error));
         return stream;
@@ -24,7 +24,7 @@ vi.mock('node:fs', async () => {
   };
 });
 
-async function cleanupFolders() {
+function cleanupFolders() {
   try {
     rmSync('input', { recursive: true, force: true });
     rmSync('output', { recursive: true, force: true });
@@ -32,12 +32,12 @@ async function cleanupFolders() {
 }
 
 describe('copyfiles', () => {
-  afterEach(async () => {
-    await cleanupFolders();
+  afterEach(() => {
+    cleanupFolders();
   });
 
-  afterAll(async () => {
-    await cleanupFolders();
+  afterAll(() => {
+    cleanupFolders();
   });
 
   beforeEach(() => {
@@ -62,8 +62,8 @@ describe('copyfiles', () => {
     writeFileSync('input/a.txt', 'a');
     writeFileSync('input/b.txt', 'b');
     writeFileSync('input/c.js', 'c');
-    copyfiles(['input/*.txt', 'output'], {}, (err) => {
-      readdir('output/input', async (err, files) => {
+    copyfiles(['input/*.txt', 'output'], {}, () => {
+      readdir('output/input', async (_err, files) => {
         expect(files).toEqual(['a.txt', 'b.txt']);
         done();
       });
@@ -76,8 +76,8 @@ describe('copyfiles', () => {
     });
     writeFileSync('input/b.txt', 'b');
     writeFileSync('input/c.js', 'c');
-    copyfiles(['input/*.txt', 'output'], {}, (err) => {
-      readdir('output/input', (err, files) => {
+    copyfiles(['input/*.txt', 'output'], {}, () => {
+      readdir('output/input', (_err, files) => {
         expect(files).toEqual(['a.txt', 'b.txt']);
         //  'correct mode'
         // expect(statSync('output/input/a.txt').mode).toBe(33261);
@@ -94,7 +94,7 @@ describe('copyfiles', () => {
     copyfiles(['input/*.txt', 'output'], {
       exclude: ['**/*.js.txt', '**/*.ps.txt']
     }, (err) => {
-      readdir('output/input', (err, files) => {
+      readdir('output/input', (_err, files) => {
         expect(files).toEqual(['a.txt', 'b.txt']);
         done();
       });
@@ -113,8 +113,8 @@ describe('copyfiles', () => {
     writeFileSync('input/a.txt', 'a');
     writeFileSync('input/b.txt', 'b');
     writeFileSync('input/.c.txt', 'c');
-    copyfiles(['input/*.txt', 'output'], { all: true }, (err) => {
-      readdir('output/input', (err, files) => {
+    copyfiles(['input/*.txt', 'output'], { all: true }, () => {
+      readdir('output/input', (_err, files) => {
         expect(files).toEqual(['.c.txt', 'a.txt', 'b.txt']);
         done();
       });
@@ -125,8 +125,8 @@ describe('copyfiles', () => {
     writeFileSync('input/a.txt', 'a');
     writeFileSync('input/b.txt', 'b');
     writeFileSync('input/c.js', 'c');
-    copyfiles(['input/*.txt', 'output'], { up: 1 }, (err) => {
-      readdir('output', (err, files) => {
+    copyfiles(['input/*.txt', 'output'], { up: 1 }, () => {
+      readdir('output', (_err, files) => {
         expect(files).toEqual(['a.txt', 'b.txt']);
         done();
       });
@@ -134,12 +134,14 @@ describe('copyfiles', () => {
   }));
 
   test('with up true', () => new Promise((done: any) => {
+    createDir('input/deep');
     writeFileSync('input/a.txt', 'a');
     writeFileSync('input/b.txt', 'b');
     writeFileSync('input/c.js', 'c');
-    copyfiles(['input/*.txt', 'output'], { up: true }, (err) => {
-      readdir('output', (err, files) => {
-        expect(files).toEqual(['a.txt', 'b.txt']);
+    writeFileSync('input/deep/d.txt', 'd');
+    copyfiles(['input/**/*.txt', 'output'], { up: true }, () => {
+      readdir('output', (_err, files) => {
+        expect(files).toEqual(['a.txt', 'b.txt', 'd.txt']);
         done();
       });
     });
@@ -149,8 +151,8 @@ describe('copyfiles', () => {
     writeFileSync('input/other/a.txt', 'a');
     writeFileSync('input/other/b.txt', 'b');
     writeFileSync('input/other/c.js', 'c');
-    copyfiles(['input/**/*.txt', 'output'], { up: 2 }, (err) => {
-      readdir('output', (err, files) => {
+    copyfiles(['input/**/*.txt', 'output'], { up: 2 }, () => {
+      readdir('output', (_err, files) => {
         expect(files).toEqual(['a.txt', 'b.txt']);
         done();
       });
@@ -173,8 +175,8 @@ describe('copyfiles', () => {
     writeFileSync('input/other/a.txt', 'a');
     writeFileSync('input/b.txt', 'b');
     writeFileSync('input/other/c.js', 'c');
-    copyfiles(['input/**/*.txt', 'output'], { flat: true }, (err) => {
-      readdir('output', (err, files) => {
+    copyfiles(['input/**/*.txt', 'output'], { flat: true }, () => {
+      readdir('output', (_err, files) => {
         expect(files).toEqual(['a.txt', 'b.txt']);
         done();
       });
@@ -188,7 +190,7 @@ describe('copyfiles', () => {
       writeFileSync('input/origin/inner/a.txt', 'a');
       writeFileSync('input/origin/inner/b.txt', 'b');
       symlinkSync('origin', 'input/dest');
-      copyfiles(['input/**/*.txt', 'output'], { up: 1, follow: true }, (err) => {
+      copyfiles(['input/**/*.txt', 'output'], { up: 1, follow: true }, () => {
         const files = globSync('output/**/*.txt');
         expect(new Set(files)).toEqual(new Set(['output/a.txt', 'output/b.txt']));
       });
@@ -200,8 +202,8 @@ describe('copyfiles', () => {
     writeFileSync('input/other/a.txt', 'a');
     writeFileSync('input/b.txt', 'b');
     writeFileSync('input/other/c.js', 'c');
-    copyfiles(['input/**/*.txt', 'output'], { flat: true, verbose: true }, (err) => {
-      readdir('output', (err, files) => {
+    copyfiles(['input/**/*.txt', 'output'], { flat: true, verbose: true }, () => {
+      readdir('output', (_err, files) => {
         expect(files).toEqual(['a.txt', 'b.txt']);
         const globCall = logSpy.mock.calls.find(call => call[0] === 'glob found');
         expect(globCall).toBeTruthy();
@@ -306,8 +308,8 @@ describe('copyfiles', () => {
     writeFileSync('input/other/a.txt', 'a');
     writeFileSync('input/other/b.txt', 'b');
     writeFileSync('input/other/c.js', 'c');
-    copyfiles(['input/**/*.txt', 'output'], { up: 2, verbose: true }, (err) => {
-      readdir('output', (err, files) => {
+    copyfiles(['input/**/*.txt', 'output'], { up: 2, verbose: true }, () => {
+      readdir('output', (_err, files) => {
         expect(files).toEqual(['a.txt', 'b.txt']);
         expect(logSpy).toHaveBeenCalledWith('glob found', ['input/other/a.txt', 'input/other/b.txt']);
         expect(logSpy).toHaveBeenCalledWith('copy:', { from: 'input/other/a.txt', to: 'output/a.txt' });
@@ -322,10 +324,9 @@ describe('copyfiles', () => {
     writeFileSync('input/.env.production', 'SOME=VALUE');
     copyfiles(['input/.env.production', 'output/.env'], {}, (err) => {
       expect(err).toBeUndefined();
-      readdir('output', (err, files) => {
+      readdir('output', (_err, files) => {
         expect(files).toContain('.env');
         // Check file contents
-        const { readFileSync } = require('node:fs');
         const content = readFileSync('output/.env', 'utf8');
         expect(content).toBe('SOME=VALUE');
         done();
@@ -337,14 +338,281 @@ describe('copyfiles', () => {
     writeFileSync('input/original.txt', 'HELLO WORLD');
     copyfiles(['input/original.txt', 'output/renamed.txt'], {}, (err) => {
       expect(err).toBeUndefined();
-      readdir('output', (err, files) => {
+      readdir('output', (_err, files) => {
         expect(files).toContain('renamed.txt');
         // Check file contents
-        const { readFileSync } = require('node:fs');
         const content = readFileSync('output/renamed.txt', 'utf8');
         expect(content).toBe('HELLO WORLD');
         done();
       });
+    });
+  }));
+
+  test('copies and renames files, using --flat option, from subfolders using wildcard in destination with .scss extension', () => new Promise((done: any) => {
+    // Setup: create input files in subfolders
+    createDir('input/sub1');
+    createDir('input/sub2/deep1');
+    writeFileSync('input/root.css', '.root { color: black }');
+    writeFileSync('input/sub1/input1.css', 'h1 { color: red }');
+    writeFileSync('input/sub2/input2.css', 'h2 { color: blue }');
+    writeFileSync('input/sub2/input3.css', 'h3 { color: green }');
+    writeFileSync('input/sub2/deep1/d1.css', '.d1 { color: yellow }');
+
+    copyfiles(['input/**/*.css', 'output/*.scss'], { flat: true }, (err) => {
+      expect(err).toBeUndefined();
+      const files = readdirSync('output');
+      expect(files).toEqual(expect.arrayContaining([
+        'root.scss', 'input1.scss', 'input2.scss', 'input3.scss', 'd1.scss'
+      ]));
+      expect(readFileSync('output/root.scss', 'utf8')).toBe('.root { color: black }');
+      expect(readFileSync('output/input1.scss', 'utf8')).toBe('h1 { color: red }');
+      expect(readFileSync('output/input2.scss', 'utf8')).toBe('h2 { color: blue }');
+      expect(readFileSync('output/input3.scss', 'utf8')).toBe('h3 { color: green }');
+      expect(readFileSync('output/d1.scss', 'utf8')).toBe('.d1 { color: yellow }');
+      done();
+    });
+  }));
+
+  test('copies and renames files, using --up option, from subfolders using wildcard in destination with .scss extension', () => new Promise((done: any) => {
+    // Setup: create input files in subfolders
+    createDir('input/sub1');
+    createDir('input/sub2/deep1');
+    writeFileSync('input/root.css', '.root { color: black }');
+    writeFileSync('input/sub1/input1.css', 'h1 { color: red }');
+    writeFileSync('input/sub2/input2.css', 'h2 { color: blue }');
+    writeFileSync('input/sub2/input3.css', 'h3 { color: green }');
+    writeFileSync('input/sub2/deep1/d1.css', '.d1 { color: yellow }');
+
+    copyfiles(['input/**/*.css', 'output/*.scss'], {}, (err) => {
+      expect(err).toBeUndefined();
+      expect(readFileSync('output/input/root.scss', 'utf8')).toBe('.root { color: black }');
+      expect(readFileSync('output/input/sub1/input1.scss', 'utf8')).toBe('h1 { color: red }');
+      expect(readFileSync('output/input/sub2/input2.scss', 'utf8')).toBe('h2 { color: blue }');
+      expect(readFileSync('output/input/sub2/input3.scss', 'utf8')).toBe('h3 { color: green }');
+      expect(readFileSync('output/input/sub2/deep1/d1.scss', 'utf8')).toBe('.d1 { color: yellow }');
+      done();
+    });
+  }));
+
+  test('copies and renames files, using --up:1 option, from subfolders using wildcard in destination with .scss extension', () => new Promise((done: any) => {
+    // Setup: create input files in subfolders
+    createDir('input/deep1');
+    writeFileSync('input/input1.css', 'h1 { color: red }');
+    writeFileSync('input/input2.css', 'h2 { color: blue }');
+    writeFileSync('input/input3.css', 'h3 { color: green }');
+    writeFileSync('input/deep1/d1.css', '.d1 { color: yellow }');
+
+    copyfiles(['input/**/*.css', 'output/*.scss'], { up: true }, (err) => {
+      expect(err).toBeUndefined();
+      expect(readFileSync('output/input1.scss', 'utf8')).toBe('h1 { color: red }');
+      expect(readFileSync('output/input2.scss', 'utf8')).toBe('h2 { color: blue }');
+      expect(readFileSync('output/input3.scss', 'utf8')).toBe('h3 { color: green }');
+      expect(readFileSync('output/d1.scss', 'utf8')).toBe('.d1 { color: yellow }');
+      done();
+    });
+  }));
+
+  test('copies and renames files, using --up:1 option, from subfolders using wildcard in destination with .scss extension', () => new Promise((done: any) => {
+    // Setup: create input files in subfolders
+    createDir('input/sub1');
+    createDir('input/sub2');
+    createDir('input/sub2/deep1');
+    writeFileSync('input/root.css', '.root { color: black }');
+    writeFileSync('input/sub1/input1.css', 'h1 { color: red }');
+    writeFileSync('input/sub2/input2.css', 'h2 { color: blue }');
+    writeFileSync('input/sub2/input3.css', 'h3 { color: green }');
+    writeFileSync('input/sub2/deep1/d1.css', '.d1 { color: yellow }');
+
+    copyfiles(['input/**/*.css', 'output/*.scss'], { up: 1 }, (err) => {
+      expect(err).toBeUndefined();
+      expect(readFileSync('output/root.scss', 'utf8')).toBe('.root { color: black }');
+      expect(readFileSync('output/sub1/input1.scss', 'utf8')).toBe('h1 { color: red }');
+      expect(readFileSync('output/sub2/input2.scss', 'utf8')).toBe('h2 { color: blue }');
+      expect(readFileSync('output/sub2/input3.scss', 'utf8')).toBe('h3 { color: green }');
+      expect(readFileSync('output/sub2/deep1/d1.scss', 'utf8')).toBe('.d1 { color: yellow }');
+      done();
+    });
+  }));
+
+  test('copies and renames files, using --flat option and rename callback, from subfolders with .scss extension', () => new Promise((done: any) => {
+    // Setup: create input files in subfolders
+    createDir('input/sub1');
+    createDir('input/sub2/deep1');
+    writeFileSync('input/root.css', '.root { color: black }');
+    writeFileSync('input/sub1/input1.css', 'h1 { color: red }');
+    writeFileSync('input/sub2/input2.css', 'h2 { color: blue }');
+    writeFileSync('input/sub2/input3.css', 'h3 { color: green }');
+    writeFileSync('input/sub2/deep1/d1.css', '.d1 { color: yellow }');
+
+    copyfiles(['input/**/*.css', 'output'], {
+      flat: true,
+      rename: (_src, dest) => dest.replace(/\.css$/, '.scss')
+    }, (err) => {
+      expect(err).toBeUndefined();
+      const files = readdirSync('output');
+      expect(files).toEqual(expect.arrayContaining([
+        'root.scss', 'input1.scss', 'input2.scss', 'input3.scss', 'd1.scss'
+      ]));
+      expect(readFileSync('output/root.scss', 'utf8')).toBe('.root { color: black }');
+      expect(readFileSync('output/input1.scss', 'utf8')).toBe('h1 { color: red }');
+      expect(readFileSync('output/input2.scss', 'utf8')).toBe('h2 { color: blue }');
+      expect(readFileSync('output/input3.scss', 'utf8')).toBe('h3 { color: green }');
+      expect(readFileSync('output/d1.scss', 'utf8')).toBe('.d1 { color: yellow }');
+      done();
+    });
+  }));
+
+  test('copies and renames files, using --up:1 option and rename callback, from subfolders but keeps .css extension', () => new Promise((done: any) => {
+    // Setup: create input files in subfolders
+    createDir('input/sub1');
+    createDir('input/sub2/deep1');
+    writeFileSync('input/root.css', '.root { color: black }');
+    writeFileSync('input/sub1/input1.css', 'h1 { color: red }');
+    writeFileSync('input/sub2/input2.css', 'h2 { color: blue }');
+    writeFileSync('input/sub2/input3.css', 'h3 { color: green }');
+    writeFileSync('input/sub2/deep1/d1.css', '.d1 { color: yellow }');
+
+    copyfiles(['input/**/*.css', 'output'], {
+      up: 1,
+      rename: (_src, dest) => dest.replace(/([^/\\]+)\.css$/, 'renamed-$1.css')
+    }, (err) => {
+      expect(err).toBeUndefined();
+      expect(readFileSync('output/renamed-root.css', 'utf8')).toBe('.root { color: black }');
+      expect(readFileSync('output/sub1/renamed-input1.css', 'utf8')).toBe('h1 { color: red }');
+      expect(readFileSync('output/sub2/renamed-input2.css', 'utf8')).toBe('h2 { color: blue }');
+      expect(readFileSync('output/sub2/renamed-input3.css', 'utf8')).toBe('h3 { color: green }');
+      expect(readFileSync('output/sub2/deep1/renamed-d1.css', 'utf8')).toBe('.d1 { color: yellow }');
+      done();
+    });
+  }));
+
+  test('copies and renames files using both destination glob and rename callback', () => new Promise((done: any) => {
+    createDir('input/sub');
+    writeFileSync('input/foo.css', 'foo');
+    writeFileSync('input/sub/bar.css', 'bar');
+    copyfiles(['input/**/*.css', 'output/*.scss'], {
+      rename: (_src, dest) => dest.replace(/foo\.scss$/, 'baz.scss')
+    }, (err) => {
+      expect(err).toBeUndefined();
+      expect(readFileSync('output/input/baz.scss', 'utf8')).toBe('foo');
+      expect(readFileSync('output/input/sub/bar.scss', 'utf8')).toBe('bar');
+      done();
+    });
+  }));
+
+  test('copies and renames files, moving them to a subdirectory via rename callback', () => new Promise((done: any) => {
+    writeFileSync('input/a.txt', 'a');
+    writeFileSync('input/b.txt', 'b');
+    copyfiles(['input/*.txt', 'output'], {
+      rename: (_src, dest) => dest.replace('output', 'output/renamed')
+    }, (err) => {
+      expect(err).toBeUndefined();
+      expect(readFileSync('output/renamed/input/a.txt', 'utf8')).toBe('a');
+      expect(readFileSync('output/renamed/input/b.txt', 'utf8')).toBe('b');
+      done();
+    });
+  }));
+
+  test('copies files with rename callback that returns the same path', () => new Promise((done: any) => {
+    writeFileSync('input/a.txt', 'a');
+    copyfiles(['input/a.txt', 'output'], {
+      rename: (_src, dest) => dest
+    }, (err) => {
+      expect(err).toBeUndefined();
+      expect(readFileSync('output/input/a.txt', 'utf8')).toBe('a');
+      done();
+    });
+  }));
+
+  test('copies files and strips extension via rename callback', () => new Promise((done: any) => {
+    writeFileSync('input/a.txt', 'a');
+    copyfiles(['input/a.txt', 'output'], {
+      rename: (_src, dest) => dest.replace(/\.txt$/, '')
+    }, (err) => {
+      expect(err).toBeUndefined();
+      expect(readFileSync('output/input/a', 'utf8')).toBe('a');
+      done();
+    });
+  }));
+
+  test('calls callback with error if rename callback throws', () => new Promise((done: any) => {
+    writeFileSync('input/a.txt', 'a');
+    copyfiles(['input/a.txt', 'output'], {
+      rename: () => { throw new Error('rename failed'); }
+    }, (err) => {
+      expect(err).toBeInstanceOf(Error);
+      expect(err?.message).toBe('rename failed');
+      done();
+    });
+  }));
+
+  test('copies and renames files, using --up:true and destination glob, from nested folders', () => new Promise((done: any) => {
+    createDir('input/level1/level2');
+    writeFileSync('input/level1/level2/a.css', 'a');
+    copyfiles(['input/**/*.css', 'output/*.scss'], { up: true }, (err) => {
+      expect(err).toBeUndefined();
+      expect(readFileSync('output/a.scss', 'utf8')).toBe('a');
+      done();
+    });
+  }));
+
+  test('destination glob with source file with no extension', () => new Promise((done: any) => {
+    writeFileSync('input/file', 'abc');
+    copyfiles(['input/file', 'output/*.txt'], {}, (err) => {
+      expect(err).toBeUndefined();
+      expect(readFileSync('output/input/file.txt', 'utf8')).toBe('abc');
+      done();
+    });
+  }));
+
+  test('calls callback with error if rename callback throws (glob)', () => new Promise((done: any) => {
+    writeFileSync('input/a.txt', 'a');
+    copyfiles(['input/a.txt', 'output/*.txt'], {
+      rename: () => { throw new Error('rename failed glob'); }
+    }, (err) => {
+      expect(err).toBeInstanceOf(Error);
+      expect(err?.message).toBe('rename failed glob');
+      done();
+    });
+  }));
+
+  test('destination glob with source file and destination with no extension', () => new Promise((done: any) => {
+    writeFileSync('input/file', 'abc');
+    copyfiles(['input/file', 'output/*'], {}, (err) => {
+      expect(err).toBeUndefined();
+      expect(readFileSync('output/input/file', 'utf8')).toBe('abc');
+      done();
+    });
+  }));
+
+  test('throws when destination is missing (no callback)', () => {
+    expect(() => copyfiles(['input/a.txt'], {})).toThrow(
+      'Please make sure to provide both <inFile> and <outDirectory>, i.e.: "copyfiles <inFile> <outDirectory>"'
+    );
+  });
+
+  test('throws when nothing is copied and error option is set (no callback)', () => {
+    createDir('output');
+    expect(() => {
+      copyfiles(['input/doesnotexist.txt', 'output'], { error: true });
+    }).toThrow('nothing copied');
+  });
+
+  test('throws with rename glob and up 2', () => new Promise((done: any) => {
+    // Setup: create input files in subfolders
+    createDir('input/sub1');
+    createDir('input/sub2/deep1');
+    writeFileSync('input/root.css', '.root { color: black }');
+    writeFileSync('input/sub1/input1.css', 'h1 { color: red }');
+    writeFileSync('input/sub2/input2.css', 'h2 { color: blue }');
+    writeFileSync('input/sub2/input3.css', 'h3 { color: green }');
+    writeFileSync('input/sub2/deep1/d1.css', '.d1 { color: yellow }');
+
+    copyfiles(['input/**/*.css', 'output/*.scss'], { up: 2 }, (err) => {
+      if (err) {
+        expect(err?.message).toBe(`Can't go up 2 levels from input (1 levels).`);
+        done();
+      }
     });
   }));
 });
