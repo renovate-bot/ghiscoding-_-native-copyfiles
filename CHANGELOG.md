@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.0](https://github.com/ghiscoding/native-copyfiles/compare/v1.1.0...v1.2.0) (2025-06-07)
+
+### Features
+
+* add --dry-run option ([#22](https://github.com/ghiscoding/native-copyfiles/issues/22)) ([df73230](https://github.com/ghiscoding/native-copyfiles/commit/df732302fb2da4d4c8bc3621f955995c0240f5d2))
+
 ## [1.1.0](https://github.com/ghiscoding/native-copyfiles/compare/v1.0.0...v1.1.0) (2025-06-06)
 
 ### Features
