@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/ghiscoding/native-copyfiles/compare/v1.2.0...v1.2.1) (2025-06-07)
+
+### Bug Fixes
+
+* use dufferent release script to remove scripts/devDependencies ([2429167](https://github.com/ghiscoding/native-copyfiles/commit/24291670d644a03e74891472cc9fe571561614e5))
+
 ## [1.2.0](https://github.com/ghiscoding/native-copyfiles/compare/v1.1.0...v1.2.0) (2025-06-07)
 
 ### Features
