@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [20]
+        node: [22]
 
     steps:
       - name: Clone repository
@@ -45,7 +45,7 @@ jobs:
       - name: Install npm dependencies
         run: npm install
 
-      - name: Build with TS Types
+      - name: Build Library
         run: npm run build
 
       - name: Run Unit Tests

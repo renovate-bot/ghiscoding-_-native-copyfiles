@@ -96,7 +96,6 @@ function getDestinationPath(inFile: string, outDir: string, options: CopyFileOpt
 /** Show statistics when `verbose` and/or `stat` are enabled */
 function displayStatWhenEnabled(options: CopyFileOptions, count: number) {
   if (options.verbose || options.stat) {
-    console.log('\n');
     console.log(`Files copied:   ${count}`);
     console.timeEnd('Execution time');
   }
