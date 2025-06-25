@@ -43,9 +43,10 @@
     "biome:lint:write": "biome lint --write ./src",
     "biome:format:check": "biome format ./src",
     "biome:format:write": "biome format --write ./src",
-    "preview:copy": "node dist/cli.js test-copyin test-copyout --dry-run --flat --stat",
-    "preview:release": "release --dry-run --skip-checks --build-script build",
-    "release": "release --build-script build",
+    "preview:help": "node dist/cli.js --help",
+    "preview:copy": "node dist/cli.js test-copyin test-copyout --flat --stat",
+    "preview:release": "release-it --only-version --dry-run",
+    "release": "release-it --only-version",
     "test": "vitest --watch --config ./vitest.config.mts",
     "test:coverage": "vitest --coverage --config ./vitest.config.mts"
   },
@@ -55,14 +56,15 @@
     "yargs": "^18.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.0.0-beta.6",
-    "@gc-utils/release": "^0.2.2",
+    "@biomejs/biome": "^2.0.5",
+    "@release-it/conventional-changelog": "^10.0.1",
     "@types/node": "^22.15.30",
     "@types/yargs": "^17.0.33",
-    "@vitest/coverage-v8": "^3.2.2",
+    "@vitest/coverage-v8": "^3.2.4",
     "premove": "^4.0.0",
+    "release-it": "^19.0.3",
     "typescript": "^5.8.3",
-    "vitest": "^3.2.2"
+    "vitest": "^3.2.4"
   },
   "engines": {
     "node": "^20.0.0 || >=22.0.0"
