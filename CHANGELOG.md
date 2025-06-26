@@ -1,3 +1,13 @@
+# Change Log 
+
+All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## [1.3.0](https://github.com/ghiscoding/native-copyfiles/compare/v1.2.1...v1.3.0) (2025-06-26)
+
+### Features
+
+* migrate from `yargs` to `cli-nano` ([#23](https://github.com/ghiscoding/native-copyfiles/issues/23)) ([e012c76](https://github.com/ghiscoding/native-copyfiles/commit/e012c76120f45a267fd7f5efad3cde3ebdd9922b))
+
 # Change Log
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
