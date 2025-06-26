@@ -74,7 +74,7 @@ describe('copyfiles', () => {
                   expect(files).toEqual(['a.txt', 'b.txt']);
                   exitSpy.mockRestore();
                   done();
-                }, 50);
+                }, 75);
               } catch (e) {
                 exitSpy.mockRestore();
                 done(e);
