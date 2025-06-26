@@ -22,28 +22,21 @@ describe('copyfiles', () => {
 
   beforeEach(() => {
     cleanupFolders();
+    createDir('input1/other');
     createDir('input2/other');
+    // createDir('output2');
   });
 
   test(
-    'CLI exclude',
+    'CLI multiple files',
     () =>
       new Promise((done: any) => {
+        writeFileSync('input1/a.txt', 'a');
+        writeFileSync('input1/b.txt', 'b');
         writeFileSync('input2/a.txt', 'a');
         writeFileSync('input2/b.txt', 'b');
-        writeFileSync('input2/c.doc', 'c');
-        writeFileSync('input2/d.md', 'd');
 
-        vi.spyOn(process, 'argv', 'get').mockReturnValueOnce([
-          'node.exe',
-          'native-copyfiles/dist/cli.js',
-          'input2',
-          'output2',
-          '--exclude',
-          '**/*.doc',
-          '--exclude',
-          '**/*.md',
-        ]);
+        vi.spyOn(process, 'argv', 'get').mockReturnValue(['node.exe', 'native-copyfiles/dist/cli.js', 'input1', 'input2', 'output2']);
 
         // Mock process.exit so it doesn't kill the test runner
         // @ts-ignore
