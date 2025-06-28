@@ -32,7 +32,7 @@ try {
       positional: [
         {
           name: 'inFile',
-          description: 'Source files',
+          description: 'Source file(s)',
           type: 'string',
           variadic: true,
           required: true,

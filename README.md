@@ -8,11 +8,11 @@
 
 ## native-copyfiles
 
-Copy files easily via JavaScript or the CLI, it uses [tinyglobby](https://www.npmjs.com/package/tinyglobby) internally for glob patterns and [yargs](https://www.npmjs.com/package/yargs) for the CLI.
+Copy files easily via JavaScript or the CLI, it uses [tinyglobby](https://www.npmjs.com/package/tinyglobby) internally for glob patterns and [cli-nano](https://www.npmjs.com/package/cli-nano) for the CLI.
 
-The library is very similar from the outside to the [copyfiles](https://www.npmjs.com/package/copyfiles) package, however its internal is quite different, it uses more native NodeJS code and less dependencies (3 instead of 7). The package options are the same (except for `--soft` which is not implemented), some new options were also added in this project here (see below).
+The library is very similar to the [copyfiles](https://www.npmjs.com/package/copyfiles) package, at least from the outside, however its internal is quite different, it uses more native NodeJS code and a lot less dependencies (3 instead of 7). The options are nearly the same (except for `--soft` which is not implemented), new options were also added in this project here (mainly the rename feature, see below).
 
-> Note: there is 1 noticeable difference with `copyfiles`, any options must be provided as a suffix after the source/target directories command (the original project had them as prefix).<br>
+> Note: there is 1 noticeable difference with `copyfiles`, any options must be provided as a suffix after the source/target directories command (the original `copyfiles` project has them as prefix).<br>
 > This mean calling: `copyfiles source target [options]` instead of `copyfiles [options] source target`
 
 ### Install
@@ -23,8 +23,12 @@ npm install native-copyfiles -D
 
 ### Command Line
 
-```bash
-  Usage: copyfiles inFile [more files ...] outDirectory [options]
+```
+  Usage: copyfiles <inFile..> <outDirectory> [options]
+
+Positionals:
+  inFile              Source file(s)                                            [string|string[]]
+  outDirectory        Destination directory                                     [string]
 
   Options:
     -u, --up       slice a path off the bottom of the paths                     [number]
@@ -41,7 +45,7 @@ npm install native-copyfiles -D
 ```
 
 > [!NOTE]
-> Options **must** be provided after the command directories as suffix (the original project had them as prefix)
+> Options **must** be provided after the command directories as suffix (the original project has them as prefix)
 
 copy some files, give it a bunch of arguments, (which can include globs), the last one
 is the out directory (which it will create if necessary).  Note: on Windows globs must be **double quoted**, everybody else can quote however they please.
