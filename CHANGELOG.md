@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/ghiscoding/native-copyfiles/compare/v1.3.0...v1.3.1) (2025-06-28)
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([#24](https://github.com/ghiscoding/native-copyfiles/issues/24)) ([6f888e1](https://github.com/ghiscoding/native-copyfiles/commit/6f888e14b6a0c6f2cd3eac967ae1d9a01e3bb73a))
+* ignore test spec files when publishing on npm ([fe1b24f](https://github.com/ghiscoding/native-copyfiles/commit/fe1b24f1d02fe76d45c4ec7fb941d994db5eb1ff))
+* strip package fields w/releasing on npm ([2a1cba9](https://github.com/ghiscoding/native-copyfiles/commit/2a1cba90c43e83e5b78fa1d88ded75ea78cc4734))
+
 ## [1.3.0](https://github.com/ghiscoding/native-copyfiles/compare/v1.2.1...v1.3.0) (2025-06-26)
 
 ### Features
