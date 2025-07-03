@@ -198,7 +198,7 @@ copyfiles([paths], opt, callback);
 
 The first argument is an array of paths whose last element is assumed the destination path.
 The second argument (`opt`) being the options argument 
-and finally the third and last argument is a callback function which is executed after after all files copied
+and finally the third and last argument is a callback function which is executed after all files copied
 
 ```js
 {
