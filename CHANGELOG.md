@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.3](https://github.com/ghiscoding/native-copyfiles/compare/v1.3.2...v1.3.3) (2025-07-05)
+
+### Bug Fixes
+
+* **deps:** bump all dependencies ([f46c973](https://github.com/ghiscoding/native-copyfiles/commit/f46c973de31e43bb743e9e86f4dd5286017ddce8))
+* **deps:** update cli-nano to latest w/better typing & smaller build ([#29](https://github.com/ghiscoding/native-copyfiles/issues/29)) ([489b89e](https://github.com/ghiscoding/native-copyfiles/commit/489b89e006e3522f8d3e9037a313bf9a726517e5))
+* use only declaration maps ([#30](https://github.com/ghiscoding/native-copyfiles/issues/30)) ([837fd07](https://github.com/ghiscoding/native-copyfiles/commit/837fd078e375a43812907ea909e75b47bfed91a9))
+
 ## [1.3.2](https://github.com/ghiscoding/native-copyfiles/compare/v1.3.1...v1.3.2) (2025-07-02)
 
 ### Bug Fixes
