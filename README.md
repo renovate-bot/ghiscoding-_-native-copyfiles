@@ -4,14 +4,14 @@
 [![codecov](https://codecov.io/gh/ghiscoding/native-copyfiles/branch/main/graph/badge.svg)](https://codecov.io/gh/ghiscoding/native-copyfiles)
 [![npm](https://img.shields.io/npm/v/native-copyfiles.svg)](https://www.npmjs.com/package/native-copyfiles)
 [![npm](https://img.shields.io/npm/dy/native-copyfiles)](https://www.npmjs.com/package/native-copyfiles)
-[![npm bundle size](https://img.shields.io/bundlephobia/minzip/native-copyfiles?color=success&label=gzip)](https://bundlephobia.com/result?p=native-copyfiles)
+[![npm bundle size](https://deno.bundlejs.com/badge?q=native-copyfiles)](https://bundlejs.com/?q=native-copyfiles)
 <a href="https://nodejs.org/en/about/previous-releases"><img src="https://img.shields.io/node/v/native-copyfiles.svg" alt="Node" /></a>
 
 ## native-copyfiles
 
 Copy files easily via JavaScript or the CLI, it uses [tinyglobby](https://www.npmjs.com/package/tinyglobby) internally for glob patterns and [cli-nano](https://www.npmjs.com/package/cli-nano) for the CLI.
 
-The library is very similar to the [copyfiles](https://www.npmjs.com/package/copyfiles) package, at least from the outside; however its internal is very different. It uses more native NodeJS code and a lot fewer dependencies (3 instead of 7), which makes this package a lot smaller compared to the original `copyfiles` project (1/3 of its size). The options are nearly the same (except for `--soft`, which is not implemented), new options were also added in this project here (mainly the rename feature, see below).
+The library is very similar to the [copyfiles](https://www.npmjs.com/package/copyfiles) package, at least from the outside; however its internal is very different. It uses more native NodeJS code and a lot fewer dependencies (3 instead of 7), which makes this package a lot smaller compared to the original `copyfiles` project (1/4 of its size). The options are nearly the same (except for `--soft`, which is not implemented), new options were also added in this project here (mainly the rename feature, see below).
 
 > Note: there is 1 noticeable difference with `copyfiles`, any options must be provided as a suffix after the source/target directories command (the original `copyfiles` project has them as prefix).<br>
 > This mean calling: `copyfiles source target [options]` instead of `copyfiles [options] source target`
