@@ -207,14 +207,14 @@ and finally the third and last argument is a callback function which is executed
 
 ```js
 {
-    verbose: bool,      // print more information to console
-    up: number,         // slice a path off the bottom of the paths
-    exclude: string,    // exclude pattern
-    all: bool,	        // include dot files
-    dryRun: bool,       // show what would be copied, without actually copying anything
-    follow: bool,       // follow symlinked directories when expanding ** patterns
-    error: bool         // raise errors if no files copied
-    stat: bool          // show statistics after execution (time + file count)
+    verbose: boolean;     // print more information to console
+    up: number;           // slice a path off the bottom of the paths
+    exclude: string;      // exclude pattern
+    all: boolean;         // include dot files
+    dryRun: boolean;      // show what would be copied, without actually copying anything
+    follow: boolean;      // follow symlinked directories when expanding ** patterns
+    error: boolean;       // raise errors if no files copied
+    stat: boolean;        // show statistics after execution (time + file count)
     rename: (src, dest) => string;  // callback to transform the destination filename(s)
 }
 ```
