@@ -12,7 +12,7 @@
 
 Copy files easily via JavaScript or the CLI, it uses [tinyglobby](https://www.npmjs.com/package/tinyglobby) internally for glob patterns and [cli-nano](https://www.npmjs.com/package/cli-nano) for the CLI.
 
-The library is very similar to the [copyfiles](https://www.npmjs.com/package/copyfiles) package, at least from the outside; however its internal is very different. It uses more native NodeJS code and a lot fewer dependencies (3 instead of 7), which makes this package a lot smaller compared to the original `copyfiles` project (1/4 of its size). The options are nearly the same (except for `--soft`, which is not implemented), new options were also added in this project here (mainly the rename feature, see below).
+The library is very similar to the [copyfiles](https://www.npmjs.com/package/copyfiles) package, at least from the outside; however its internal is very different. It uses more native NodeJS code and a lot fewer dependencies (3 instead of 7), which makes this package a lot smaller compared to the original `copyfiles` project (1/4 of its size). The options are nearly the same (except for `--soft`, which is not implemented), new options were also added in this project here (mainly the rename and dry-run features, see below).
 
 > Note: there is 1 noticeable difference with `copyfiles`, any options must be provided as a suffix after the source/target directories command (the original `copyfiles` project has them as prefix).<br>
 > This mean calling: `copyfiles source target [options]` instead of `copyfiles [options] source target`
