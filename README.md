@@ -2,18 +2,19 @@
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
 [![Vitest](https://img.shields.io/badge/tested%20with-vitest-fcc72b.svg?logo=vitest)](https://vitest.dev/)
 [![codecov](https://codecov.io/gh/ghiscoding/native-copyfiles/branch/main/graph/badge.svg)](https://codecov.io/gh/ghiscoding/native-copyfiles)
+<a href="https://nodejs.org/en/about/previous-releases"><img src="https://img.shields.io/node/v/native-copyfiles.svg" alt="Node" /></a>
+
 [![npm](https://img.shields.io/npm/v/native-copyfiles.svg)](https://www.npmjs.com/package/native-copyfiles)
 [![npm](https://img.shields.io/npm/dy/native-copyfiles)](https://www.npmjs.com/package/native-copyfiles)
-[![npm bundle size](https://img.shields.io/bundlephobia/minzip/native-copyfiles?color=success&label=gzip)](https://bundlephobia.com/result?p=native-copyfiles)
-<a href="https://nodejs.org/en/about/previous-releases"><img src="https://img.shields.io/node/v/native-copyfiles.svg" alt="Node" /></a>
+[![npm bundle size](https://deno.bundlejs.com/badge?q=native-copyfiles)](https://bundlejs.com/?q=native-copyfiles)
 
 ## native-copyfiles
 
 Copy files easily via JavaScript or the CLI, it uses [tinyglobby](https://www.npmjs.com/package/tinyglobby) internally for glob patterns and [cli-nano](https://www.npmjs.com/package/cli-nano) for the CLI.
 
-The library is very similar to the [copyfiles](https://www.npmjs.com/package/copyfiles) package, at least from the outside; however its internal is very different. It uses more native NodeJS code and a lot fewer dependencies (3 instead of 7), which makes this package a lot smaller compared to the original `copyfiles` project (1/3 of its size). The options are nearly the same (except for `--soft`, which is not implemented), new options were also added in this project here (mainly the rename feature, see below).
+The library is very similar to the [copyfiles](https://www.npmjs.com/package/copyfiles) package, at least from the outside; however its internal is quite different. It uses more native NodeJS code and a lot less dependencies (just 3 instead of 7), which makes this package a lot smaller compared to the original `copyfiles` project (1/4 of its size). The options are nearly the same (except for `--soft`, which is not implemented), there's also some new options that were added in this project (mainly the rename and dry-run features, see below).
 
-> Note: there is 1 noticeable difference with `copyfiles`, any options must be provided as a suffix after the source/target directories command (the original `copyfiles` project has them as prefix).<br>
+> Note: there is 1 noticeable difference with `copyfiles`, all CLI options must be provided as a suffix after the source/target directories command (the original `copyfiles` project has them as prefix).<br>
 > This mean calling: `copyfiles source target [options]` instead of `copyfiles [options] source target`
 
 ### Install
@@ -46,7 +47,7 @@ Positionals:
 ```
 
 > [!NOTE]
-> Options **must** be provided after the command directories as suffix (the original project has them as prefix)
+> Options **must** be provided after the command directories as suffix (the original project references them as prefix)
 
 copy some files, give it a bunch of arguments, (which can include globs), the last one
 is the out directory (which it will create if necessary).  Note: on Windows globs must be **double quoted**, everybody else can quote however they please.
@@ -98,17 +99,17 @@ does.
 
 You could quote globstars as a part of input:
 ```bash
-copyfiles some.json "./some_folder/*.json" ./dist/ && echo 'JSON files copied.'
+copyfiles some.json "./some_folder/*.json" "./dist/" && echo 'JSON files copied.'
 ```
 
 You can use the `-e` option to exclude some files from the pattern, so to exclude all files ending in `".test.js"` you could do
 
 ```bash
-copyfiles "**/*.test.js" -f ./foo/**/*.js out -e
+copyfiles "**/*.test.js" -f "./foo/**/*.js" out -e
 ```
 
 > [!NOTE]
-> By default the `.git/` and `node_modules/` directories will be excluded.
+> By default the `.git/` and `node_modules/` directories will be excluded when using globs.
 
 Other options include
 
@@ -206,14 +207,14 @@ and finally the third and last argument is a callback function which is executed
 
 ```js
 {
-    verbose: bool,      // print more information to console
-    up: number,         // slice a path off the bottom of the paths
-    exclude: string,    // exclude pattern
-    all: bool,	        // include dot files
-    dryRun: bool,       // show what would be copied, without actually copying anything
-    follow: bool,       // follow symlinked directories when expanding ** patterns
-    error: bool         // raise errors if no files copied
-    stat: bool          // show statistics after execution (time + file count)
+    verbose: boolean;     // print more information to console
+    up: number;           // slice a path off the bottom of the paths
+    exclude: string;      // exclude pattern
+    all: boolean;         // include dot files
+    dryRun: boolean;      // show what would be copied, without actually copying anything
+    follow: boolean;      // follow symlinked directories when expanding ** patterns
+    error: boolean;       // raise errors if no files copied
+    stat: boolean;        // show statistics after execution (time + file count)
     rename: (src, dest) => string;  // callback to transform the destination filename(s)
 }
 ```
