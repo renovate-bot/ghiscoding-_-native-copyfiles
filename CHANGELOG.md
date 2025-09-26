@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.6](https://github.com/ghiscoding/native-copyfiles/compare/v1.3.5...v1.3.6) (2025-09-26)
+
+### Bug Fixes
+
+* **deps:** update all dependencies ([#38](https://github.com/ghiscoding/native-copyfiles/issues/38)) ([5946d88](https://github.com/ghiscoding/native-copyfiles/commit/5946d88b606397589b6ac3a69f84e2b02ca14477))
+* publish with OIDC ([b227e63](https://github.com/ghiscoding/native-copyfiles/commit/b227e632d10bb4873fd7027a387eeaf3daed4b91))
+
 ## [1.3.5](https://github.com/ghiscoding/native-copyfiles/compare/v1.3.4...v1.3.5) (2025-07-14)
 
 ### Bug Fixes
