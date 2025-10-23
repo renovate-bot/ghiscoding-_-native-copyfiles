@@ -147,8 +147,8 @@ export function copyfiles(paths: string[], options: CopyFileOptions, callback?: 
         const stat = statSync(outPath);
         isDestFile = !stat.isDirectory();
       }
-      /* v8 ignore next 3 */
     } catch {
+      /* v8 ignore next */
       isDestFile = true;
     }
   }
