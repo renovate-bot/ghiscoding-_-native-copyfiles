@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.7](https://github.com/ghiscoding/native-copyfiles/compare/v1.3.6...v1.3.7) (2025-11-07)
+
+### Bug Fixes
+
+* copyfiles JS API options argument should be optional, fixes [#49](https://github.com/ghiscoding/native-copyfiles/issues/49) ([#50](https://github.com/ghiscoding/native-copyfiles/issues/50)) ([6dd26ea](https://github.com/ghiscoding/native-copyfiles/commit/6dd26ea48842d7ba8ffe6b5fae32e331f84bbfc8))
+
 ## [1.3.6](https://github.com/ghiscoding/native-copyfiles/compare/v1.3.5...v1.3.6) (2025-09-26)
 
 ### Bug Fixes
