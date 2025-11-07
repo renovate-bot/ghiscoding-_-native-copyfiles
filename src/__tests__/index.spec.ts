@@ -75,6 +75,19 @@ describe('copyfiles', () => {
       });
     }));
 
+  test('normal with options argument set as undefined', () =>
+    new Promise((done: any) => {
+      writeFileSync('input/a.txt', 'a');
+      writeFileSync('input/b.txt', 'b');
+      writeFileSync('input/c.js', 'c');
+      copyfiles(['input/*.txt', 'output'], undefined, () => {
+        readdir('output/input', async (_err, files) => {
+          expect(files).toEqual(['a.txt', 'b.txt']);
+          done();
+        });
+      });
+    }));
+
   test('modes', () =>
     new Promise((done: any) => {
       writeFileSync('input/a.txt', 'a', {
