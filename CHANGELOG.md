@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file. See [Conven
 
 ## [2.0.0](https://github.com/ghiscoding/native-copyfiles/compare/v1.3.7...v2.0.0) (2026-01-27)
 
+> [!NOTE]
+> Please visit the [v2.0.0](https://github.com/ghiscoding/native-copyfiles/releases/tag/v2.0.0) release for more details about the migration.
+
 ### ⚠ BREAKING CHANGES
 
 * **deps:** increase NodeJS engine requirement
