@@ -6,7 +6,7 @@
 
 [![npm](https://img.shields.io/npm/v/native-copyfiles.svg)](https://www.npmjs.com/package/native-copyfiles)
 [![npm](https://img.shields.io/npm/dy/native-copyfiles)](https://www.npmjs.com/package/native-copyfiles)
-[![npm bundle size](https://deno.bundlejs.com/badge?q=native-copyfiles)](https://bundlejs.com/?q=native-copyfiles)
+[![npm bundle size](https://img.shields.io/badge/gzip-1.85kB-success)](https://bundlejs.com/?q=native-copyfiles)
 
 ## native-copyfiles
 
