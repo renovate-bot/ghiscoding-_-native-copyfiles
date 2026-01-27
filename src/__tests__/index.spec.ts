@@ -1,7 +1,6 @@
-import { existsSync, mkdirSync, readdir, readdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { existsSync, globSync, mkdirSync, readdir, readdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { join as posixJoin } from 'node:path/posix';
 import { Readable } from 'node:stream';
-import { globSync } from 'tinyglobby';
 import { afterAll, afterEach, beforeEach, describe, expect, it, test, vi } from 'vitest';
 
 import { copyfiles, createDir, filterDotFiles, getDestinationPath } from '../index.js';
@@ -373,7 +372,7 @@ describe('copyfiles', () => {
     symlinkSync('real', 'input/link');
     await new Promise<void>((resolve, reject) => {
       copyfiles('input/link/*.txt', 'output', { follow: true }, err => {
-        const files = globSync('output/**/*', { dot: true });
+        const files = globSync('output/**/*');
         console.log('output contents:', files);
         const found = files.some(f => f.endsWith('a.txt'));
         expect(found).toBe(true);
