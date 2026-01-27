@@ -45,7 +45,7 @@ Positionals:
     -E, --error    throw error if nothing is copied                             [boolean]
     -V, --verbose  print more information to console                            [boolean]
     -F, --follow   follow symbolic links                                        [boolean]
-    -s, --stat     show statistics after execution (time + file count)          [boolean]
+    -s, --stat     show statistics after execution (time + files/folders count) [boolean]
     -v, --version  show version number                                          [boolean]
     -h, --help     show help                                                    [boolean]
 ```
@@ -198,7 +198,7 @@ The `rename` callback gives you full control over the output filename and path.
 ```js
 import { copyfiles } from 'native-copyfiles';
 
-copyfiles(paths, target, opt, callback);
+copyfiles(sources, destination, opt, callback);
 ```
 
 1. first argument is a string or an array of source paths
@@ -215,10 +215,10 @@ copyfiles(paths, target, opt, callback);
     dryRun: boolean;      // show what would be copied, without actually copying anything
     follow: boolean;      // follow symlinked directories when expanding ** patterns
     error: boolean;       // raise errors if no files copied
-    stat: boolean;        // show statistics after execution (time + file count)
+    stat: boolean;        // show statistics after execution (time + files or folders count)
     rename: (src, dest) => string;  // callback to transform the destination filename(s)
 }
 ```
 
 > [!WARNING]
-> Version 2.0 changed the JS API and moved the destination as the 2nd argument (which is different compared to v1.0 which had the destination inside the 1st argument array as the last element which was super confusing).
+> Version 2.0 changed the JS API and moved the destination as the 2nd argument (which is different compared to v1.0 which previously had its destination inside the 1st argument array as the last element which was super confusing).
