@@ -1,6 +1,12 @@
 # Change Log 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/ghiscoding/native-copyfiles/compare/v2.0.0...v2.0.1) (2026-01-27)
+
+### Bug Fixes
+
+* support more complex glob patterns, brace expansion & negation ([#64](https://github.com/ghiscoding/native-copyfiles/issues/64)) ([9f501b0](https://github.com/ghiscoding/native-copyfiles/commit/9f501b0c7e09b0483a6f41dc939a1aac6b70c8ca))
+
 ## [2.0.0](https://github.com/ghiscoding/native-copyfiles/compare/v1.3.7...v2.0.0) (2026-01-27)
 
 > [!NOTE]
