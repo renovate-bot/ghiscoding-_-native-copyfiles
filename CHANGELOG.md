@@ -1,6 +1,27 @@
 # Change Log 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.0](https://github.com/ghiscoding/native-copyfiles/compare/v1.3.7...v2.0.0) (2026-01-27)
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** increase NodeJS engine requirement
+* move JS API target destination as 2nd argument (#59)
+* drop `tinyglobby` and use native `fs.glob` (#58)
+
+### Features
+
+* drop `tinyglobby` and use native `fs.glob` ([#58](https://github.com/ghiscoding/native-copyfiles/issues/58)) ([6dfb43c](https://github.com/ghiscoding/native-copyfiles/commit/6dfb43c3893cba5a14816218f1c63dc59a06410f))
+* move JS API target destination as 2nd argument ([#59](https://github.com/ghiscoding/native-copyfiles/issues/59)) ([f497142](https://github.com/ghiscoding/native-copyfiles/commit/f4971422e25a6af6cbd5ecb761b79b6e11f86f60))
+
+### Bug Fixes
+
+* adjust `/**` patterns to `//` for `fs.globSync` compatibility ([#60](https://github.com/ghiscoding/native-copyfiles/issues/60)) ([e163688](https://github.com/ghiscoding/native-copyfiles/commit/e1636882bef5e712463e785a35a9e5ff056df4fb))
+
+### Miscellaneous Chores
+
+* **deps:** increase NodeJS engine requirement ([e96bdf5](https://github.com/ghiscoding/native-copyfiles/commit/e96bdf5d2d8a48459199457d4844e06548aa3851))
+
 ## [1.3.7](https://github.com/ghiscoding/native-copyfiles/compare/v1.3.6...v1.3.7) (2025-11-07)
 
 ### Bug Fixes
