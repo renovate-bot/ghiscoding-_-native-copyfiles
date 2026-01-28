@@ -8,7 +8,7 @@
 [![npm](https://img.shields.io/npm/dy/native-copyfiles)](https://www.npmjs.com/package/native-copyfiles)
 [![npm bundle size](https://img.shields.io/badge/gzip-1.85kB-success)](https://bundlejs.com/?q=native-copyfiles)
 
-## native-copyfiles
+## Native-Copyfiles
 
 Copy files easily via JavaScript or the CLI and cross-platform usage using [cli-nano](https://www.npmjs.com/package/cli-nano) dependency for the CLI.
 
