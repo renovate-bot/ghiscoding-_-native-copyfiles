@@ -24,6 +24,7 @@ The library is very similar to the [copyfiles](https://www.npmjs.com/package/cop
 - similar to [copyfiles](https://www.npmjs.com/package/copyfiles) package except that options are suffixes instead of prefixes
 
 ### version 1.0 to 2.0
+- see [Migration](https://github.com/ghiscoding/native-copyfiles/releases/tag/v2.0.0) details
 - drop `tinyglobby` and use `fs.glob` native code (requires Node.JS >=22.17)
 - change JS API arguments (sources and destination are now 2 separate arguments)
 
