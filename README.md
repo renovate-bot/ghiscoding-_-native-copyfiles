@@ -12,18 +12,18 @@
 
 Copy files easily via JavaScript or the CLI and cross-platform usage using [cli-nano](https://www.npmjs.com/package/cli-nano) dependency for the CLI.
 
-The library is very similar to the [copyfiles](https://www.npmjs.com/package/copyfiles) package, at least from the outside; however it is quite different internally. It uses native NodeJS as much as possible and so as a lot less dependencies (just 2 instead of 7), which makes this package a lot smaller compared to the original `copyfiles` project (1.8kB instead of 27.6kB gzip). The options are nearly the same (except for `--soft`, which is not implemented), there's also some new options that were added in this project (mainly the rename and dry-run features, see below).
+The library is very similar to the [copyfiles](https://www.npmjs.com/package/copyfiles) package, at least from the outside; however it is quite different internally. It uses native NodeJS as much as possible and so as a lot less dependencies (just 2 instead of 7), which makes this package a lot smaller compared to the original `copyfiles` project (1.8kB instead of 27.6kB gzip). The options are nearly the same (except for `--soft`, which is not implemented), there's also some new features that were added in this project (mainly the copy & rename and also dry-run features, see below).
 
 > [!NOTE]
 > There is 1 noticeable difference with `copyfiles` package, all the CLI options must be provided as suffix and after the source/target directories command (the original `copyfiles` project has them as prefix).<br>
 > This mean calling: `copyfiles source target [options]` instead of `copyfiles [options] source target`
 > The JS API is also different since the destination is the 2nd function argument instead of the first argument.
 
-## Major Changes
-### version 1.0
+### Major Changes
+#### version 1.0
 - similar to [copyfiles](https://www.npmjs.com/package/copyfiles) package except that options are suffixes instead of prefixes
 
-### version 1.0 to 2.0
+#### version 1.0 to 2.0
 - see [Migration](https://github.com/ghiscoding/native-copyfiles/releases/tag/v2.0.0) details
 - drop `tinyglobby` and use `fs.glob` native code (requires Node.JS >=22.17)
 - change JS API arguments (sources and destination are now 2 separate arguments)
@@ -145,7 +145,7 @@ copyfiles "**/*.test.js" -f "./foo/**/*.js" out -e
 ```
 
 > [!NOTE]
-> By default the `.git/` and `node_modules/` directories will be excluded (when using globs). If you provide your own `--exclude` option, it will override the defaults and only use your patterns.
+> By default the `.git/` and `node_modules/` directories will be excluded (when using globs). Unless you provide your own `--exclude` option, which will override the defaults and only use your patterns.
 
 Other options include
 
