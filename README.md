@@ -8,29 +8,27 @@
 [![npm](https://img.shields.io/npm/v/native-copyfiles.svg)](https://www.npmjs.com/package/native-copyfiles)
 [![npm bundle size](https://img.shields.io/badge/gzip-1.85kB-1183c4)](https://bundlejs.com/?q=native-copyfiles)
 
-## native-copyfiles
+## Native-Copyfiles
 
 Copy files easily via JavaScript or the CLI and cross-platform usage using [cli-nano](https://www.npmjs.com/package/cli-nano) dependency for the CLI.
 
-The library is very similar to the [copyfiles](https://www.npmjs.com/package/copyfiles) package, at least from the outside; however it is quite different internally. It uses native NodeJS as much as possible and so as a lot less dependencies (just 2 instead of 7), which makes this package a lot smaller compared to the original `copyfiles` project (1.8kB instead of 27.6kB gzip). The options are nearly the same (except for `--soft`, which is not implemented), there's also some new options that were added in this project (mainly the rename and dry-run features, see below).
+The library is very similar to the [copyfiles](https://www.npmjs.com/package/copyfiles) package, at least from the outside; however it is quite different internally. It uses native NodeJS as much as possible and so as a lot less dependencies (just 2 instead of 7), which makes this package a lot smaller compared to the original `copyfiles` project (1.8kB instead of 27.6kB gzip). The options are nearly the same (except for `--soft`, which is not implemented), there's also some new features that were added in this project (mainly the copy & rename and also dry-run features, see below).
 
-> **Note**: there is 1 noticeable difference with `copyfiles` package, all the CLI options must be provided as suffix and after the source/target directories command (the original `copyfiles` project has them as prefix).<br>
+> [!NOTE]
+> There is 1 noticeable difference with `copyfiles` package, all the CLI options must be provided as suffix and after the source/target directories command (the original `copyfiles` project has them as prefix).<br>
 > This mean calling: `copyfiles source target [options]` instead of `copyfiles [options] source target`
 > The JS API is also different since the destination is the 2nd function argument instead of the first argument.
 
-> [!NOTE]
-> This project now requires Node.JS >= 22.17.0 so that we can use the native `fs.glob` and decrease the projet size. If you can't update your Node.JS just yet, then just stick with `native-copyfiles: ^1.3.7` until you can. The version 2.0 bumped Node requirement and changed the JS API arguments (see below).
+### Major Changes
+#### version 1.0
+- similar to [copyfiles](https://www.npmjs.com/package/copyfiles) package except that options are suffixes instead of prefixes
 
-### Advanced Glob Pattern Support
+#### version 1.0 to 2.0
+- see [Migration](https://github.com/ghiscoding/native-copyfiles/releases/tag/v2.0.0) details
+- drop `tinyglobby` and use `fs.glob` native code (requires Node.JS >=22.17)
+- change JS API arguments (sources and destination are now 2 separate arguments)
 
-`native-copyfiles` supports advanced glob patterns, including:
-
-- **Brace expansion**: e.g. `src/*.{js,ts}`
-- **Negation**: e.g. `['src/**/*.js', '!src/**/*.test.js']`
-- **Extended wildcards**: e.g. `**/*.js`, `*bar?.js`
-- **Dotfiles**: Use `-a`/`--all` to include files starting with a dot
-
-This makes it easier to match complex sets of files for copying, similar to Bash or advanced glob libraries.
+---
 
 ### Install
 
@@ -73,8 +71,18 @@ copyfiles foo foobar foo/bar/*.js out
 you now have a directory called `"out"`, with the files `"foo"` and `"foobar"` in it, it also has a directory named `"foo"` with a directory named
 `"bar"` in it that has all the files from `"foo/bar"` that match the glob.
 
+### Advanced Glob Pattern Support
 
-#### Examples of advanced glob usage
+`native-copyfiles` supports advanced glob patterns, including:
+
+- **Brace expansion**: e.g. `src/*.{js,ts}`
+- **Negation**: e.g. `['src/**/*.js', '!src/**/*.test.js']`
+- **Extended wildcards**: e.g. `**/*.js`, `*bar?.js`
+- **Dotfiles**: Use `-a`/`--all` to include files starting with a dot
+
+This makes it easier to match complex sets of files for copying, similar to Bash or advanced glob libraries.
+
+### Examples of advanced glob usage
 
 **Brace expansion:**
 ```bash
@@ -137,7 +145,7 @@ copyfiles "**/*.test.js" -f "./foo/**/*.js" out -e
 ```
 
 > [!NOTE]
-> By default the `.git/` and `node_modules/` directories will be excluded (when using globs). If you provide your own `--exclude` option, it will override the defaults and only use your patterns.
+> By default the `.git/` and `node_modules/` directories will be excluded (when using globs). Unless you provide your own `--exclude` option, which will override the defaults and only use your patterns.
 
 Other options include
 
@@ -178,8 +186,7 @@ This will copy:
 - `input/foo.css` → `output/foo.scss`
 - `input/bar/baz.css` → `output/bar/baz.scss`
 
-The `*` in the destination is replaced with the base filename from the source.
-You can combine this with `--flat` or `--up` to control the output structure.
+The `*` in the destination is replaced with the source base filename. You can combine this with `--flat` or `--up` to control the output structure.
 
 #### 2. Rename Using a Callback (JavaScript API)
 
