@@ -4,9 +4,9 @@
 [![codecov](https://codecov.io/gh/ghiscoding/native-copyfiles/branch/main/graph/badge.svg)](https://codecov.io/gh/ghiscoding/native-copyfiles)
 <a href="https://nodejs.org/en/about/previous-releases"><img src="https://img.shields.io/node/v/native-copyfiles.svg" alt="Node" /></a>
 
-[![npm](https://img.shields.io/npm/v/native-copyfiles.svg)](https://www.npmjs.com/package/native-copyfiles)
 [![npm](https://img.shields.io/npm/dy/native-copyfiles)](https://www.npmjs.com/package/native-copyfiles)
-[![npm bundle size](https://img.shields.io/badge/gzip-1.85kB-success)](https://bundlejs.com/?q=native-copyfiles)
+[![npm](https://img.shields.io/npm/v/native-copyfiles.svg)](https://www.npmjs.com/package/native-copyfiles)
+[![npm bundle size](https://img.shields.io/badge/gzip-1.85kB-1183c4)](https://bundlejs.com/?q=native-copyfiles)
 
 ## native-copyfiles
 
