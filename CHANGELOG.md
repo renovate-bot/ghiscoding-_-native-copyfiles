@@ -1,6 +1,12 @@
 # Change Log 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.3](https://github.com/ghiscoding/native-copyfiles/compare/v2.0.2...v2.0.3) (2026-06-03)
+
+### Bug Fixes
+
+* remove duplicate code & add consistent curly braces ([#79](https://github.com/ghiscoding/native-copyfiles/issues/79)) ([22d581f](https://github.com/ghiscoding/native-copyfiles/commit/22d581fea7538b5f668ef15e4808ff63e8ebd20b))
+
 ## [2.0.2](https://github.com/ghiscoding/native-copyfiles/compare/v2.0.1...v2.0.2) (2026-06-01)
 
 ### Bug Fixes
