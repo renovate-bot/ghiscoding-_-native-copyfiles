@@ -1,6 +1,12 @@
 # Change Log 
 All notable changes to this project will be documented in this file. See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.0](https://github.com/ghiscoding/native-copyfiles/compare/v2.0.4...v2.1.0) (2026-10-03)
+
+### Features
+
+* add configurable concurrency and improve file copying ([#97](https://github.com/ghiscoding/native-copyfiles/issues/97)) ([fb8406d](https://github.com/ghiscoding/native-copyfiles/commit/fb8406d8e116367b7ffa84f14e85a03ddc874e0c))
+
 ## [2.0.4](https://github.com/ghiscoding/native-copyfiles/compare/v2.0.3...v2.0.4) (2026-08-22)
 
 ### Bug Fixes
